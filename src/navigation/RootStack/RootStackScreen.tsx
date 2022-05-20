@@ -10,12 +10,10 @@ import AuthStackScreen from '../Auth/AuthStackScreen';
 function RootStackScreen() {
   const resultAccount = useAppSelector(accountStore);
   const LoadingGl = useAppSelector(loadingGlobalStore);
-  console.log('LoadingGl', LoadingGl);
-  console.log('resultAccount', resultAccount);
 
   return (
     <View style={styles.container}>
-      {resultAccount.token ? <AppStackScreen /> : <AuthStackScreen />}
+      {!resultAccount.token ? <AppStackScreen /> : <AuthStackScreen />}
       {/* <AuthStackScreen /> */}
       <ModalPoup visible={LoadingGl.status}>
         <Loading />

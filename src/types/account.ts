@@ -32,12 +32,12 @@ export interface Register {
 export interface CustomesAccount {
   listuser: Account;
   loading: boolean;
-  token: string;
+  token: string | null;
   error: boolean;
 }
 export interface ChangePassword {
-  id: number,
-  oldpassword: string,
-  newpassword: string,
+  id: number;
+  oldpassword: string;
+  newpassword: string;
 }
 export type RegisterType = LoginType & Register;

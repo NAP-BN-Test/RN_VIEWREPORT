@@ -54,7 +54,7 @@ function AllOption({navigation}: any) {
                   }}>
                   <View
                     style={{
-                      backgroundColor: '#891393cc',
+                      backgroundColor: '#ba0500',
                       height: 70,
                       width: 70,
                       borderRadius: 60,
@@ -67,12 +67,12 @@ function AllOption({navigation}: any) {
                       {resultAccount.listuser.username.charAt(0).toUpperCase()}
                     </Text>
                   </View>
-                  <Text style={{marginBottom: 5}}>
+                  <Text style={{marginBottom: 5, fontSize: 18, fontWeight: "600"}}>
                     {resultAccount.listuser.username}
                   </Text>
-                  <Text style={{marginBottom: 5}}>
+                  {/* <Text style={{marginBottom: 5}}>
                     {resultAccount.listuser.email}
-                  </Text>
+                  </Text> */}
                 </View>
                 {/* <Text>Tài khoản</Text> */}
               </View>

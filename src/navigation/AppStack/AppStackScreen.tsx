@@ -54,58 +54,6 @@ const AppStackScreen = ({navigation}: any) => {
         component={InforeportReceivable}
       />
 
-      {/* <AppStack.Screen
-        options={{
-          title: 'Thông tin tải khoản',
-          // headerShown: false,
-        }}
-        name="infouser"
-        component={InfoUser}
-      /> */}
-      {/* <AppStack.Screen
-        options={{
-          title: 'Thông tin tải khoản',
-          // headerShown: false,
-        }}
-        name="infouser"
-        component={InfoUser}
-      />
-
-      <AppStack.Screen
-        options={{
-          title: 'Thay đổi thông tin tải khoản',
-          // headerShown: false,
-        }}
-        name="edituser"
-        component={EditUse}
-      />
-
-      <AppStack.Screen
-        options={{
-          title: 'Đổi mật khẩu',
-          // headerShown: false,
-        }}
-        name="changepassword"
-        component={ChangePassword}
-      />
-
-      <AppStack.Screen
-        options={{
-          title: 'Thêm mới',
-          // headerShown: false,
-        }}
-        name="createspending"
-        component={CreateSpending}
-      />
-
-      <AppStack.Screen
-        options={{
-          title: 'Sửa chi tiêu',
-          // headerShown: false,
-        }}
-        name="editsending"
-        component={EditSpending}
-      /> */}
     </AppStack.Navigator>
   );
 };

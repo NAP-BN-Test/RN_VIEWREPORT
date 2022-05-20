@@ -12,15 +12,16 @@ import stylesGlobal from '../../../assets/css/cssGlobal';
 import fonts from '../../../assets/font/fonts';
 import RangeDate from '../../../component/Date/rangeDate';
 import Loading from '../../../component/loading/loading';
-import {renderRow} from '../../../component/report/itemRowReport';
 import SearchDropDown from '../../../component/SearchDropDown/SearchDropDown';
-import {getSpendingByDateToDate} from '../../../features/spending';
 import {
   getParsedDate,
   getParsedTime,
   useAppDispatch,
+  useAppSelector,
 } from '../../../redux/hooks';
 import {Text, TouchableOpacity} from 'react-native';
+import {reportStore} from '../../../features';
+import {postcongnophaitra} from '../../../features/report';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -29,6 +30,10 @@ function ReportDebitReturn({navigation, route}: any) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [valueCus, setValueCus] = useState(String);
+  const [datatruyenvao, setDatatruyenvao] = useState({} as any);
+  const congnotra = useAppSelector(reportStore);
+  const [removedate, setRemovedate] = useState(1);
+  console.log('congnotra.listreport', congnotra.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
@@ -41,9 +46,10 @@ function ReportDebitReturn({navigation, route}: any) {
   console.log('route', route);
   console.log('navigation', navigation);
   const onRefresh = React.useCallback(() => {
+    setRemovedate(pre => pre + 1);
     setRefreshing(true);
     setRefreshing(false);
-
+    dispatch(postcongnophaitra({}));
     setLoading(true);
     wait(2000).then(() => {
       setLoading(false);
@@ -51,16 +57,14 @@ function ReportDebitReturn({navigation, route}: any) {
   }, []);
 
   useEffect(() => {
+    dispatch(postcongnophaitra(datatruyenvao));
     setLoading(true);
-    wait(2000).then(() => {
-      setLoading(false);
-    });
   }, [navigation]);
 
   const renderRow = ({item}: any, navigation: any) => (
     <TouchableOpacity
       activeOpacity={0.6}
-      key={item.id}
+      key={item.Id}
       style={styles.itemContainer}
       onPress={() => {
         // dispatch(postSpendingByID({id: item.id}));
@@ -71,27 +75,27 @@ function ReportDebitReturn({navigation, route}: any) {
         <View style={styles.itemContent}>
           <Text
             style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
-            {item.tenkhachhang}
+            {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {item.madh}
+              Mã hàng: {item.CodeJob}
             </Text>
 
             <Text style={styles.itemSubtitle}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              {item.tenhang}
+              Tên hàng: {item.GoodsDescription}
             </Text>
           </View>
 
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đi: {item.noidi}
+              Nơi đi: {item.PlaceOfDelivery}
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đên: {item.noiden}
+              Nơi đến: {item.PlaceOfReceipt}
             </Text>
           </View>
 
@@ -99,48 +103,46 @@ function ReportDebitReturn({navigation, route}: any) {
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Ngày mở:{' '}
-              {getParsedDate(item.ngaymo) !=
+              {getParsedDate(item.OpenDate) !=
               getParsedDate(new Date().toLocaleDateString('en-US'))
-                ? getParsedDate(item.ngaymo)
-                : 'Hôm nay ' + getParsedTime(item.ngaymo)}
+                ? getParsedDate(item.OpenDate)
+                : 'Hôm nay ' + getParsedTime(item.OpenDate)}
             </Text>
           </View>
-          <View style={styles.itemMetaContainer}>
+          {/* <View style={styles.itemMetaContainer}>
             {item.id && (
               <View style={[styles.badge, {backgroundColor: colors.redcustom}]}>
                 <Text
                   style={{fontSize: 10, color: colors.white}}
                   //   styleName="bright"
                 >
-                  Số lượng: {item.soluong.toLocaleString('vi-VN')}
+                  Số lượng: {item.SoLuongHang.toLocaleString('vi-VN')}
                 </Text>
               </View>
             )}
             <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
-              {/* {currency(SpendingBD.totalmoney)}  */}
-              {item.sotien.toLocaleString('vi-VN')}
+              Lợi nhuận: {item.LoiNhuan.toLocaleString('vi-VN')}
             </Text>
-          </View>
+          </View> */}
         </View>
       </View>
       <View style={styles.itemHr} />
     </TouchableOpacity>
   );
-
   return (
     <View style={styles.container}>
       <View style={{paddingHorizontal: 10}}>
         <RangeDate
+          value={removedate}
           onConfirm={(e: any) => {
             console.log('onConfirm', e);
-            // dispatch(
-            //   getSpendingByDateToDate({
-            //     datestart: moment(e.startDate)
-            //       .format('YYYY-MM-DD')
-            //       .toString(),
-            //     dateend: moment(e.endDate).format('YYYY-MM-DD').toString(),
-            //   }),
-            // );
+
+            dispatch(
+              postcongnophaitra({
+                tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+              }),
+            );
           }}
         />
 
@@ -168,7 +170,7 @@ function ReportDebitReturn({navigation, route}: any) {
           />
         </View>
       </View>
-      {loading ? (
+      {congnotra.loading ? (
         // Loading
         <View style={[stylesGlobal.flex_center, {height: '80%'}]}>
           <Loading />
@@ -181,9 +183,9 @@ function ReportDebitReturn({navigation, route}: any) {
             }
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, idx) => item.id.toString()}
+            keyExtractor={(item, idx) => item.Id.toString()}
             style={{backgroundColor: colors.white, paddingHorizontal: 15}}
-            data={dataTest}
+            data={congnotra.listreport}
             renderItem={item => renderRow(item, navigation)}
           />
         </View>
@@ -193,6 +195,7 @@ function ReportDebitReturn({navigation, route}: any) {
 }
 
 export default ReportDebitReturn;
+
 const styles = StyleSheet.create({
   ScrollView_container: {
     flex: 1,

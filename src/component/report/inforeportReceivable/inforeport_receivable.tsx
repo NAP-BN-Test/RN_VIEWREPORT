@@ -1,20 +1,36 @@
-import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 import colors from '../../../assets/css/color';
 import fonts from '../../../assets/font/fonts';
-import {getParsedDate, getParsedTime} from '../../../redux/hooks';
-
+import {
+  getParsedDate,
+  getParsedTime,
+  useAppSelector,
+} from '../../../redux/hooks';
+import {getdonhang} from '../../../features/report';
+import {reportStore} from '../../../features';
+import Loading from '../../loading/loading';
+import stylesGlobal from '../../../assets/css/cssGlobal';
 function InforeportReceivable({navigation: {goBack}, ...props}: any) {
   console.log(props.route.params.item);
   console.log(props.route);
+  const dispatch = useDispatch();
 
-  return (
+  useEffect(() => {
+    if (props.route.params.item.Id) {
+      dispatch(getdonhang({id: props.route.params.item.Id}));
+    }
+  }, [props.route.params.item.Id]);
+
+  const donhang = useAppSelector(reportStore);
+  console.log('donhang', donhang.order);
+  
+  return donhang.loading && donhang.order.Id ? (
+    <View style={[stylesGlobal.flex_center, {height: '80%'}]}>
+      <Loading />
+    </View>
+  ) : (
     <ScrollView style={styles.itemContainer}>
       <Text style={styles.title}>THÔNG TIN CHUNG</Text>
       <View style={styles.itemHr} />
@@ -24,7 +40,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
             <Text style={styles.itemSubtitle}>Tên khách hàng</Text>
 
             <Text style={[{fontSize: 16, color: colors.redcustom}]}>
-              {props.route.params.item.tenkhachhang}
+              {donhang.order.CustomerName}
             </Text>
           </View>
 
@@ -32,7 +48,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
             <Text style={styles.itemSubtitle}>Mã đơn</Text>
 
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {props.route.params.item.madh}
+              {donhang.order.CodeJob}
             </Text>
           </View>
 
@@ -42,26 +58,35 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
             </Text>
 
             <Text style={styles.itemSubtitle}>
-              {props.route.params.item.tenhang}
+              {donhang.order.GoodsDescription}
             </Text>
           </View>
 
           <View style={[styles.itemMetaContainer]}>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Số lượng
+              Số lượng mua
             </Text>
 
             <Text style={styles.itemSubtitle}>
-              {props.route.params.item.soluong.toLocaleString('vi-VN')}
+              {donhang.order.EnumVatmua?.toLocaleString('vi-VN')}
             </Text>
           </View>
 
+          <View style={[styles.itemMetaContainer]}>
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              Số lượng bán
+            </Text>
+
+            <Text style={styles.itemSubtitle}>
+              {donhang.order.EnumVatban?.toLocaleString('vi-VN')}
+            </Text>
+          </View>
           <View style={[styles.itemMetaContainer]}>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Nơi đi
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {props.route.params.item.noidi}
+              {donhang.order.PlaceOfDelivery}
             </Text>
           </View>
 
@@ -70,7 +95,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
               Nơi đên
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {props.route.params.item.noiden}
+              {donhang.order.PlaceOfReceipt}
             </Text>
           </View>
 
@@ -79,17 +104,17 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
               Số bill
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {props.route.params.item.sobill}
+              {donhang.order.SoBookbill}
             </Text>
           </View>
 
           <View style={[styles.itemMetaContainer]}>
             <Text style={styles.itemSubtitle}>Ngày mở</Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {getParsedDate(props.route.params.item.ngaymo) !=
+              {getParsedDate(donhang.order.OpenDate) !=
               getParsedDate(new Date().toLocaleDateString('en-US'))
-                ? getParsedDate(props.route.params.item.ngaymo)
-                : 'Hôm nay ' + getParsedTime(props.route.params.item.ngaymo)}
+                ? getParsedDate(donhang.order.OpenDate)
+                : 'Hôm nay ' + getParsedTime(donhang.order.OpenDate)}
             </Text>
           </View>
 
@@ -98,7 +123,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
               Ghi chú
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {props.route.params.item.ghichu}
+              {donhang.order.Note}
             </Text>
           </View>
         </View>
@@ -113,7 +138,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
               Số tiền
             </Text>
             <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
-              {props.route.params.item.sotien.toLocaleString('vi-VN')}
+              {donhang.order.GiaMua?.toLocaleString('vi-VN')}
             </Text>
           </View>
 
@@ -123,25 +148,25 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
             </Text>
 
             <Text style={styles.itemSubtitle}>
-              {props.route.params.item.cothue ? 'YES' : 'NO'}
+              {donhang.order.ThueMua ? 'YES' : 'NO'}
             </Text>
           </View>
 
-          <View style={[styles.itemMetaContainer]}>
+          {/* <View style={[styles.itemMetaContainer]}>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Phần trăm thuế
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {props.route.params.item.phantramthue}
+              {donhang.order.phantramthue}
             </Text>
-          </View>
+          </View> */}
 
           <View style={styles.itemMetaContainer}>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Tiền sau thuế
             </Text>
             <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
-              {props.route.params.item.tiensauthue.toLocaleString('vi-VN')}
+              {donhang.order.GiaMuaSauThue?.toLocaleString('vi-VN')}
             </Text>
           </View>
 
@@ -151,7 +176,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
             </Text>
 
             <Text style={styles.itemSubtitle}>
-              {props.route.params.item.tttt ? 'YES' : 'NO'}
+              {donhang.order.FlagTtthanhToanMua ? 'YES' : 'NO'}
             </Text>
           </View>
         </View>

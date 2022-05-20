@@ -15,14 +15,6 @@ import fonts from '../../../assets/font/fonts';
 import RangeDate from '../../../component/Date/rangeDate';
 import Loading from '../../../component/loading/loading';
 import RNSRadioGroup from '../../../component/radiogroup/radiogroupCpn';
-import {spendingStore} from '../../../features';
-import {
-  getSpendingByDateToDate,
-  getSpendingByDay,
-  getSpendingByMonth,
-  getSpendingByWeek,
-  postSpendingByID,
-} from '../../../features/spending';
 import {
   getParsedDate,
   getParsedDateTime,
@@ -36,7 +28,6 @@ function Home({navigation, route}: any) {
   const dispatch = useAppDispatch();
   const [indexSelect, setIndexSelect] = useState(0);
   const [refreshing, setRefreshing] = React.useState(false);
-  const SpendingBD = useSelector(spendingStore);
   // console.log('SpendingBD', SpendingBD);
   console.log('route', route);
   console.log('navigation', navigation);
@@ -44,19 +35,19 @@ function Home({navigation, route}: any) {
     setRefreshing(true);
     switch (indexSelect) {
       case 0:
-        dispatch(getSpendingByDay());
+      
         break;
 
       case 1:
-        dispatch(getSpendingByWeek());
+        
         break;
 
       case 2:
-        dispatch(getSpendingByMonth());
+        
         break;
 
       case 3:
-        dispatch(getSpendingByDay());
+      
         break;
 
       default:
@@ -70,19 +61,19 @@ function Home({navigation, route}: any) {
   useEffect(() => {
     switch (indexSelect) {
       case 0:
-        dispatch(getSpendingByDay());
+      
         break;
 
       case 1:
-        dispatch(getSpendingByWeek());
+        
         break;
 
       case 2:
-        dispatch(getSpendingByMonth());
+        
         break;
 
       case 3:
-        dispatch(getSpendingByDay());
+      
         break;
 
       default:
@@ -155,7 +146,7 @@ function Home({navigation, route}: any) {
 
       {/* Render danh sách */}
 
-      {SpendingBD.loading ? (
+      {refreshing ? (
         // Loading
         <View style={[stylesGlobal.flex_center, {height: '80%'}]}>
           <Loading />
@@ -167,21 +158,12 @@ function Home({navigation, route}: any) {
               <RangeDate
                 onConfirm={(e: any) => {
                   console.log('onConfirm', e);
-                  dispatch(
-                    getSpendingByDateToDate({
-                      datestart: moment(e.startDate)
-                        .format('YYYY-MM-DD')
-                        .toString(),
-                      dateend: moment(e.endDate)
-                        .format('YYYY-MM-DD')
-                        .toString(),
-                    }),
-                  );
+                  
                 }}
               />
             </View>
           )}
-          <FlatList
+          {/* <FlatList
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -191,7 +173,7 @@ function Home({navigation, route}: any) {
             style={{backgroundColor: colors.white, paddingHorizontal: 15}}
             data={SpendingBD.listspending}
             renderItem={renderRow}
-          />
+          /> */}
         </View>
       )}
 

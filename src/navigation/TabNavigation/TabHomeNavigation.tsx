@@ -4,8 +4,10 @@ import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import Animated from 'react-native-reanimated';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch} from 'react-redux';
 import colors from '../../assets/css/color';
 import {token} from '../../commom/api';
+import {getcus} from '../../features/customer';
 import AllOption from '../../screens/ScrennStart/AllOption/allOption';
 import ReportCustomer from '../../screens/ScrennStart/ReportCustomer/report_customer';
 import ReportDebitReturn from '../../screens/ScrennStart/ReportDebitReturn/report_debit_return';
@@ -31,18 +33,17 @@ const CustomTabBarButton = ({children, onPress}: any) => (
 );
 
 const TabHomeNavigation = ({navigation}: any) => {
+  const dispatch = useDispatch();
   const headerBackground = require('../../assets/img/topBarBg.png');
   useEffect(() => {
     async function name() {
       let value: string = (await AsyncStorage.getItem('token')) || '';
-      console.log('111111111111', value);
     }
     name();
     console.log('token tab', token);
+    dispatch(getcus());
   }, []);
-  function onPress() {
-    console.log(1);
-  }
+  function onPress() {}
   return (
     <Tab.Navigator
       screenOptions={({route}: any) => ({
@@ -106,33 +107,6 @@ const TabHomeNavigation = ({navigation}: any) => {
           return <MaterialIcons name={iconName} size={28} color={color} />;
         },
       })}>
-      {/* <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          title: 'Home',
-          headerRight: () => (
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={() => {
-                navigation.navigate('createspending');
-              }}>
-              <MaterialIcons
-                name={'control-point'}
-                size={28}
-                color={colors.white}
-                style={{marginRight: 10}}
-              />
-            </TouchableOpacity>
-          ),
-          // headerLeft: null,
-          headerTitleStyle: {
-            color: colors.white,
-            fontSize: 18,
-          },
-          // headerShown: false,
-        }}
-      /> */}
       <Tab.Screen
         name="ReportTime"
         component={ReportCustomer}
@@ -185,38 +159,6 @@ const TabHomeNavigation = ({navigation}: any) => {
           },
         }}
       />
-
-      {/* <Tab.Screen
-        name="Add"
-        component={PageGrow}
-        options={{
-          headerShown: false,
-          tabBarButton: props => (
-            <CustomTabBarButton onPress={onPress} {...props}>
-              <MaterialIcons
-                name={'add-circle'}
-                size={60}
-                color={'#891393cc'}
-              />
-            </CustomTabBarButton>
-          ),
-        }}
-      /> */}
-
-      {/* <Tab.Screen
-        name="Target"
-        component={Target}
-        options={{
-          // headerShown: false,
-          headerTitleStyle: {
-            color: colors.white,
-            fontSize: 18,
-          },
-          title: 'Target',
-        }}
-      /> */}
-
-      {/* <Tab.Screen name="Search" component={Search} /> */}
     </Tab.Navigator>
   );
 };

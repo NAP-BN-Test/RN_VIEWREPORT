@@ -1,16 +1,16 @@
 import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
 import counterReducer from '../component/counterSlice/counterSlice';
 import accountReducer from '../features/account/account-slice';
+import reportReducer from '../features/report/report-slice';
+import customerReducer from '../features/customer/customer-slice';
 import loadingGlobalReducer from '../features/loadingGlobal/loadingGlobal-slice';
-import spendingReducer from '../features/spending/spending-slice';
-import targetReducer from '../features/target/target-slice';
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     account: accountReducer,
+    report: reportReducer,
+    customer: customerReducer,
     loadingGlobalStore: loadingGlobalReducer,
-    spending: spendingReducer,
-    target: targetReducer,
   },
 });
 

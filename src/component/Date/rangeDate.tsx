@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import moment from 'moment';
 import {DatePickerModal} from 'react-native-paper-dates';
@@ -7,13 +7,17 @@ import {TextInput} from 'react-native-paper';
 import colors from '../../assets/css/color';
 interface propsRangeDate {
   onConfirm?: any;
+  value?: any;
 }
 
 function RangeDate(props: propsRangeDate) {
-  const [range, setRange] = useState({} as {startDate: Date; endDate: Date});
+  const [range, setRange] = useState(
+    {} as {startDate: any; endDate: any} | any,
+  );
   const [open, setOpen] = React.useState(false);
 
   console.log('range', range);
+  console.log('props', props);
   const onConfirm = (params: any) => {
     console.log('startDate', params.startDate);
     console.log('endDate', params.endDate);
@@ -21,6 +25,10 @@ function RangeDate(props: propsRangeDate) {
     setOpen(false);
     props.onConfirm({startDate: params.startDate, endDate: params.endDate});
   };
+
+  useEffect(() => {
+    setRange({});
+  }, [props.value]);
 
   //   const onDismiss = () => {
   //     console.log('onConfirm');
@@ -56,9 +64,11 @@ function RangeDate(props: propsRangeDate) {
           />
         }
         value={
-          moment(range.startDate).format('DD-MM-YYYY') +
-          ' đến ' +
-          moment(range.endDate).format('DD-MM-YYYY')
+          range.startDate
+            ? moment(range.startDate).format('DD-MM-YYYY') +
+              ' đến ' +
+              moment(range.endDate).format('DD-MM-YYYY')
+            : ''
         }
       />
       <DatePickerModal

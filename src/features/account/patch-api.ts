@@ -1,19 +1,30 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import accountAPI from '../../commom/api/api-account';
-import {ChangePassword, LoginType, RegisterType} from '../../types';
+import API_REPORT from '../../commom/api/api-report';
+import {LoginType} from '../../types';
 
 export const postLogin = createAsyncThunk(
   '/account/login',
-  async (data: LoginType) => {
-    const response = await accountAPI.postLogin(data);
-    return response;
-  },
-);
+  async (data: LoginType, {rejectWithValue}) => {
+    console.log('data login', data);
+    try {
+      const response = await accountAPI.postLogin({
+        username: 'admin',
+        password: '123456a$',
+      });
+      return response;
+    } catch (err: any) {
+      console.log('errrrrrrrrrrrrr', err.response.config.data);
 
-export const postRegister = createAsyncThunk(
-  '/account/register',
-  async (data: RegisterType) => {
-    const response = await accountAPI.postRegister(data);
+      if (!err.response) {
+        throw err;
+      }
+
+      return rejectWithValue(err.response);
+    }
+    const response = await accountAPI.postLogin(data);
+    console.log(response);
+
     return response;
   },
 );
@@ -21,22 +32,3 @@ export const postRegister = createAsyncThunk(
 export const postLogout = createAsyncThunk('/account/logout', () => {
   return;
 });
-
-export const checkToken = createAsyncThunk('/account/checktoken', async () => {
-  const response = await accountAPI.postCheckToken();
-  console.log('check', response);
-  
-  return response.result;
-});
-
-export const ChangePass = createAsyncThunk(
-  '/account/changepassword',
-  async (data: ChangePassword) => {
-    console.log('data chuyền vào', data);
-    
-    const response = await accountAPI.postChangePassWord(data);
-    console.log('ChangePassword', response);
-    
-    return response.result;
-  },
-);

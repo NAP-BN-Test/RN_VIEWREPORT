@@ -12,16 +12,16 @@ import stylesGlobal from '../../../assets/css/cssGlobal';
 import fonts from '../../../assets/font/fonts';
 import RangeDate from '../../../component/Date/rangeDate';
 import Loading from '../../../component/loading/loading';
-import {renderRow} from '../../../component/report/itemRowReport';
 import SearchDropDown from '../../../component/SearchDropDown/SearchDropDown';
-import {getSpendingByDateToDate} from '../../../features/spending';
-
 import {
   getParsedDate,
   getParsedTime,
   useAppDispatch,
+  useAppSelector,
 } from '../../../redux/hooks';
 import {Text, TouchableOpacity} from 'react-native';
+import {reportStore} from '../../../features';
+import {postcongnophaithu} from '../../../features/report';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -30,6 +30,10 @@ function ReportReceivable({navigation, route}: any) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [valueCus, setValueCus] = useState(String);
+  const [datatruyenvao, setDatatruyenvao] = useState({} as any);
+  const congnothu = useAppSelector(reportStore);
+  const [removedate, setRemovedate] = useState(1);
+  console.log('congnothu.listreport', congnothu.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
@@ -42,9 +46,10 @@ function ReportReceivable({navigation, route}: any) {
   console.log('route', route);
   console.log('navigation', navigation);
   const onRefresh = React.useCallback(() => {
+    setRemovedate(pre => pre + 1);
     setRefreshing(true);
     setRefreshing(false);
-
+    dispatch(postcongnophaithu(datatruyenvao));
     setLoading(true);
     wait(2000).then(() => {
       setLoading(false);
@@ -52,89 +57,91 @@ function ReportReceivable({navigation, route}: any) {
   }, []);
 
   useEffect(() => {
+    dispatch(postcongnophaithu(datatruyenvao));
     setLoading(true);
-    wait(2000).then(() => {
-      setLoading(false);
-    });
   }, [navigation]);
 
   const renderRow = ({item}: any, navigation: any) => (
     <TouchableOpacity
       activeOpacity={0.6}
-      key={item.id}
+      key={item.Id}
       style={styles.itemContainer}
       onPress={() => {
         // dispatch(postSpendingByID({id: item.id}));
         navigation.push('inforeportReceivable', {item});
       }}>
       <View style={styles.itemSubContainer}>
+        {/* <Image source={{uri: item.image}} style={styles.itemImage} /> */}
         <View style={styles.itemContent}>
           <Text
             style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
-            {item.tenkhachhang}
+            {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
+            {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {item.madh}
+              Mã hàng: {item.CodeJob}
             </Text>
 
-            <Text style={styles.itemSubtitle}>{item.tenhang}</Text>
-          </View>
-
-          <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
-            <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đi: {item.noidi}
-            </Text>
-            <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đên: {item.noiden}
+            <Text style={styles.itemSubtitle}>
+              {/* {currency(SpendingBD.totalmoney)}  */}
+              Tên hàng: {item.GoodsDescription}
             </Text>
           </View>
 
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
+            {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              Nơi đi: {item.PlaceOfDelivery}
+            </Text>
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              Nơi đến: {item.PlaceOfReceipt}
+            </Text>
+          </View>
+
+          <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
+            {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Ngày mở:{' '}
-              {getParsedDate(item.ngaymo) !=
+              {getParsedDate(item.OpenDate) !=
               getParsedDate(new Date().toLocaleDateString('en-US'))
-                ? getParsedDate(item.ngaymo)
-                : 'Hôm nay ' + getParsedTime(item.ngaymo)}
+                ? getParsedDate(item.OpenDate)
+                : 'Hôm nay ' + getParsedTime(item.OpenDate)}
             </Text>
           </View>
-          <View style={styles.itemMetaContainer}>
+          {/* <View style={styles.itemMetaContainer}>
             {item.id && (
               <View style={[styles.badge, {backgroundColor: colors.redcustom}]}>
                 <Text
                   style={{fontSize: 10, color: colors.white}}
                   //   styleName="bright"
                 >
-                  Số lượng: {item.soluong.toLocaleString('vi-VN')}
+                  Số lượng: {item.SoLuongHang.toLocaleString('vi-VN')}
                 </Text>
               </View>
             )}
             <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
-              {/* {currency(SpendingBD.totalmoney)}  */}
-              {item.sotien.toLocaleString('vi-VN')}
+              Lợi nhuận: {item.LoiNhuan.toLocaleString('vi-VN')}
             </Text>
-          </View>
+          </View> */}
         </View>
       </View>
       <View style={styles.itemHr} />
     </TouchableOpacity>
   );
-
   return (
     <View style={styles.container}>
       <View style={{paddingHorizontal: 10}}>
         <RangeDate
+          value={removedate}
           onConfirm={(e: any) => {
             console.log('onConfirm', e);
-            // dispatch(
-            //   getSpendingByDateToDate({
-            //     datestart: moment(e.startDate)
-            //       .format('YYYY-MM-DD')
-            //       .toString(),
-            //     dateend: moment(e.endDate).format('YYYY-MM-DD').toString(),
-            //   }),
-            // );
+            dispatch(
+              postcongnophaithu({
+                tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+              }),
+            );
           }}
         />
 
@@ -162,7 +169,7 @@ function ReportReceivable({navigation, route}: any) {
           />
         </View>
       </View>
-      {loading ? (
+      {congnothu.loading ? (
         // Loading
         <View style={[stylesGlobal.flex_center, {height: '80%'}]}>
           <Loading />
@@ -175,9 +182,9 @@ function ReportReceivable({navigation, route}: any) {
             }
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, idx) => item.id.toString()}
+            keyExtractor={(item, idx) => item.Id.toString()}
             style={{backgroundColor: colors.white, paddingHorizontal: 15}}
-            data={dataTest}
+            data={congnothu.listreport}
             renderItem={item => renderRow(item, navigation)}
           />
         </View>
@@ -187,6 +194,7 @@ function ReportReceivable({navigation, route}: any) {
 }
 
 export default ReportReceivable;
+
 const styles = StyleSheet.create({
   ScrollView_container: {
     flex: 1,

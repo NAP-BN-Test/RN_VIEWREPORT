@@ -13,13 +13,15 @@ import fonts from '../../../assets/font/fonts';
 import RangeDate from '../../../component/Date/rangeDate';
 import Loading from '../../../component/loading/loading';
 import SearchDropDown from '../../../component/SearchDropDown/SearchDropDown';
-import {getSpendingByDateToDate} from '../../../features/spending';
 import {
   getParsedDate,
   getParsedTime,
   useAppDispatch,
+  useAppSelector,
 } from '../../../redux/hooks';
 import {Text, TouchableOpacity} from 'react-native';
+import {customerStore, reportStore} from '../../../features';
+import {postdoanhthu} from '../../../features/report';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -28,6 +30,14 @@ function ReportCustomer({navigation, route}: any) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [valueCus, setValueCus] = useState(String);
+  const [datatruyenvao, setDatatruyenvao] = useState({} as any);
+  const [removedate, setRemovedate] = useState(1);
+
+  const doanhthu = useAppSelector(reportStore);
+  const customer = useAppSelector(customerStore);
+  // console.log('donhang', donhang.order);
+  console.log('customer', customer);
+  console.log('doanhthu.listreport', doanhthu.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
@@ -40,9 +50,10 @@ function ReportCustomer({navigation, route}: any) {
   console.log('route', route);
   console.log('navigation', navigation);
   const onRefresh = React.useCallback(() => {
+    setRemovedate(pre => pre + 1);
     setRefreshing(true);
     setRefreshing(false);
-
+    dispatch(postdoanhthu(datatruyenvao));
     setLoading(true);
     wait(2000).then(() => {
       setLoading(false);
@@ -50,16 +61,14 @@ function ReportCustomer({navigation, route}: any) {
   }, []);
 
   useEffect(() => {
+    dispatch(postdoanhthu(datatruyenvao));
     setLoading(true);
-    wait(2000).then(() => {
-      setLoading(false);
-    });
   }, [navigation]);
 
   const renderRow = ({item}: any, navigation: any) => (
     <TouchableOpacity
       activeOpacity={0.6}
-      key={item.id}
+      key={item.Id}
       style={styles.itemContainer}
       onPress={() => {
         // dispatch(postSpendingByID({id: item.id}));
@@ -70,27 +79,27 @@ function ReportCustomer({navigation, route}: any) {
         <View style={styles.itemContent}>
           <Text
             style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
-            {item.tenkhachhang}
+            {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {item.madh}
+              Mã hàng: {item.CodeJob}
             </Text>
 
             <Text style={styles.itemSubtitle}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              {item.tenhang}
+              Tên hàng: {item.GoodsDescription}
             </Text>
           </View>
 
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đi: {item.noidi}
+              Nơi đi: {item.PlaceOfDelivery}
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đên: {item.noiden}
+              Nơi đến: {item.PlaceOfReceipt}
             </Text>
           </View>
 
@@ -98,10 +107,10 @@ function ReportCustomer({navigation, route}: any) {
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Ngày mở:{' '}
-              {getParsedDate(item.ngaymo) !=
+              {getParsedDate(item.OpenDate) !=
               getParsedDate(new Date().toLocaleDateString('en-US'))
-                ? getParsedDate(item.ngaymo)
-                : 'Hôm nay ' + getParsedTime(item.ngaymo)}
+                ? getParsedDate(item.OpenDate)
+                : 'Hôm nay ' + getParsedTime(item.OpenDate)}
             </Text>
           </View>
           <View style={styles.itemMetaContainer}>
@@ -111,13 +120,13 @@ function ReportCustomer({navigation, route}: any) {
                   style={{fontSize: 10, color: colors.white}}
                   //   styleName="bright"
                 >
-                  Số lượng: {item.soluong.toLocaleString('vi-VN')}
+                  Số lượng: {item.SoLuongHang.toLocaleString('vi-VN')}
                 </Text>
               </View>
             )}
             <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              {item.sotien.toLocaleString('vi-VN')}
+              Lợi nhuận: {item.LoiNhuan.toLocaleString('vi-VN')}
             </Text>
           </View>
         </View>
@@ -129,16 +138,15 @@ function ReportCustomer({navigation, route}: any) {
     <View style={styles.container}>
       <View style={{paddingHorizontal: 10}}>
         <RangeDate
+          value={removedate}
           onConfirm={(e: any) => {
             console.log('onConfirm', e);
-            // dispatch(
-            //   getSpendingByDateToDate({
-            //     datestart: moment(e.startDate)
-            //       .format('YYYY-MM-DD')
-            //       .toString(),
-            //     dateend: moment(e.endDate).format('YYYY-MM-DD').toString(),
-            //   }),
-            // );
+            dispatch(
+              postdoanhthu({
+                tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+              }),
+            );
           }}
         />
 
@@ -166,7 +174,7 @@ function ReportCustomer({navigation, route}: any) {
           />
         </View>
       </View>
-      {loading ? (
+      {doanhthu.loading ? (
         // Loading
         <View style={[stylesGlobal.flex_center, {height: '80%'}]}>
           <Loading />
@@ -179,9 +187,9 @@ function ReportCustomer({navigation, route}: any) {
             }
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, idx) => item.id.toString()}
+            keyExtractor={(item, idx) => item.Id.toString()}
             style={{backgroundColor: colors.white, paddingHorizontal: 15}}
-            data={dataTest}
+            data={doanhthu.listreport}
             renderItem={item => renderRow(item, navigation)}
           />
         </View>

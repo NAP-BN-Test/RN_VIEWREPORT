@@ -1,16 +1,15 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {retriveData, token} from '../../../commom/api';
-import Loading from '../../../component/loading/loading';
+import {token} from '../../../commom/api';
+import accountDonHang from '../../../commom/api/api-report';
 import ModalPoup from '../../../component/Modal/Modal';
 import NotifiToast from '../../../component/notifiToast/toast';
 import Notify from '../../../component/Notify/Notify';
 import {accountStore} from '../../../features';
-import {checkToken, postLogin} from '../../../features/account';
-import {isLoadingGL} from '../../../features/loadingGlobal';
+import {loginFake, postLogin} from '../../../features/account';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {LoginType} from '../../../types';
 import {styles} from './styleLogin';
@@ -39,16 +38,12 @@ const Login = ({navigation}: any) => {
     } else {
       console.log('Đang xử lý');
     }
-
-    console.log(1);
   }, [resultAccount.loading]);
 
   useEffect(() => {
-    console.log('token login', token);
-    
     if (token) {
-      console.log('Check token', token._W);
-      dispatch(checkToken());
+      console.log('token', token._W);
+      dispatch(loginFake());
       //Gọi đến hàm check token
       //Có sẽ login
       //Không sẽ logout ra màn login
@@ -57,15 +52,25 @@ const Login = ({navigation}: any) => {
 
   // dispatch api
   const handlePostLogin = (data: LoginType) => {
-    if (data.username == '' || data.username == '') {
-      NotifiToast("Vui lòng điền tài khoản mật khẩu")
-    }else{
+    if (data.username == '' || data.password == '') {
+      NotifiToast('Vui lòng điền tài khoản mật khẩu');
+    } else {
       dispatch(postLogin(data));
+
+      // console.log("Đăng nhập");
+
+      // dispatch(getdonhang({id: 3}));
+      // dispatch(
+      //   postcongnophaitra({
+      //     // tungay: '19/04/2022',
+      //     // denngay: '19/05/2022',
+      //     // idkhachhang: 3,
+      //   }),
+      // );
     }
-    
   };
-  const [username, setUsername] = useState('dung99pk');
-  const [password, setPassword] = useState('123456');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [visible, setVisible] = React.useState(false);
 
   return (
@@ -101,68 +106,7 @@ const Login = ({navigation}: any) => {
           }>
           <Text style={styles.buttonTitle}>Đăng nhập</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('forgotpassword')}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              color: '#000',
-              fontWeight: '400',
-              fontSize: 14,
-              marginTop: 20,
-            }}>
-            Forgot Password?
-          </Text>
-        </TouchableOpacity> */}
-        {/* <Text style={[styles.textDemo, {marginTop: 20}]}>or</Text>
-        <View
-          style={[
-            {
-              marginTop: 20,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-            },
-          ]}>
-          <TouchableOpacity
-          //   onPress={() => onLoginPress()}
-          >
-            <View>{iconFB}</View>
-          </TouchableOpacity>
-          <TouchableOpacity
-          //   onPress={() => onLoginPress()}
-          >
-            <View>{iconGG}</View>
-          </TouchableOpacity>
-          <TouchableOpacity
-          //   onPress={() => onLoginPress()}
-          >
-            <View>{iconPhone}</View>
-          </TouchableOpacity>
-          <TouchableOpacity
-          //   onPress={() => onLoginPress()}
-          >
-            <View>{iconWhat}</View>
-          </TouchableOpacity>
-        </View> */}
       </View>
-      {/* <View
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          //   alignItems: 'center',
-        }}>
-        <Text style={styles.textDemo}>Don't have an account?</Text>
-        <TouchableOpacity
-          style={styles.buttonFooter}
-          onPress={() => navigation.navigate('register')}>
-          <Text style={styles.buttonTitleFooter}>Register</Text>
-        </TouchableOpacity>
-      </View> */}
 
       <ModalPoup visible={visible}>
         <Notify
