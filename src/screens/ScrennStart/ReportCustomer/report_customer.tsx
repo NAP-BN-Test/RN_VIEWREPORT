@@ -32,15 +32,39 @@ function ReportCustomer({navigation, route}: any) {
   const [valueCus, setValueCus] = useState(String);
   const [datatruyenvao, setDatatruyenvao] = useState({} as any);
   const [removedate, setRemovedate] = useState(1);
+  const [IDKH, setIDKH] = useState(null as any);
+  const [rangdate, setRangdate] = useState({} as any);
+  const [listData, setListData] = useState([] as any);
 
   const doanhthu = useAppSelector(reportStore);
   const customer = useAppSelector(customerStore);
-  // console.log('donhang', donhang.order);
-  console.log('customer', customer);
-  console.log('doanhthu.listreport', doanhthu.listreport);
+
+  // console.log('customer', customer);
+  // console.log('doanhthu.listreport', doanhthu.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
+
+    console.log(value);
+    let obj: any = customer.listCus.find(o => o.NameVi === value);
+    console.log('obj', obj.Id);
+    setIDKH(obj.Id);
+
+    if (rangdate.tungay) {
+      dispatch(
+        postdoanhthu({
+          idkhachhang: obj.Id,
+        }),
+      );
+    } else {
+      dispatch(
+        postdoanhthu({
+          idkhachhang: obj.Id,
+          tungay: rangdate.tungay,
+          denngay: rangdate.denngay,
+        }),
+      );
+    }
   };
 
   const onChangeTextCus = (value: any) => {
@@ -51,6 +75,9 @@ function ReportCustomer({navigation, route}: any) {
   console.log('navigation', navigation);
   const onRefresh = React.useCallback(() => {
     setRemovedate(pre => pre + 1);
+    setValueCus('');
+    setIDKH(null);
+    setRangdate({})
     setRefreshing(true);
     setRefreshing(false);
     dispatch(postdoanhthu(datatruyenvao));
@@ -64,6 +91,19 @@ function ReportCustomer({navigation, route}: any) {
     dispatch(postdoanhthu(datatruyenvao));
     setLoading(true);
   }, [navigation]);
+
+  useEffect(() => {
+    let arrName = [] as any;
+    async function getNameCustomer() {
+      customer.listCus.map(e => {
+        arrName.push(e.NameVi);
+      });
+    }
+
+    getNameCustomer();
+
+    setListData(arrName);
+  }, [customer.listCus]);
 
   const renderRow = ({item}: any, navigation: any) => (
     <TouchableOpacity
@@ -141,12 +181,26 @@ function ReportCustomer({navigation, route}: any) {
           value={removedate}
           onConfirm={(e: any) => {
             console.log('onConfirm', e);
-            dispatch(
-              postdoanhthu({
-                tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-                denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
-              }),
-            );
+            setRangdate({
+              tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+              denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+            });
+            if (IDKH) {
+              dispatch(
+                postdoanhthu({
+                  idkhachhang: IDKH,
+                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                }),
+              );
+            } else {
+              dispatch(
+                postdoanhthu({
+                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                }),
+              );
+            }
           }}
         />
 
@@ -168,7 +222,7 @@ function ReportCustomer({navigation, route}: any) {
           <SearchDropDown
             label="Khách hàng"
             value={valueCus}
-            data={listports}
+            data={listData}
             onPress={onPressCus}
             onChangeText={onChangeTextCus}
           />

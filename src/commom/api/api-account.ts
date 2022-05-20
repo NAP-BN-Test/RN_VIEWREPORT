@@ -6,7 +6,7 @@ import axiosClient from './axios-client';
 const accountAPI = {
   postLogin(data: LoginType): Promise<any> {
     const url = 'auth/login';
-    return axiosClient.post(url, {username: "admin", password: "123456a$"});
+    return axiosClient.post(url, data);
   },
 };
 export default accountAPI;

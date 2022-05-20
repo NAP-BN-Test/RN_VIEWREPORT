@@ -5,7 +5,7 @@ const API_REPORT = {
     const url =
       'donhang?' +
       'access_token=' +
-      '1f38cc659898f3e982adfc9b433bdd2484faac30c5adebcd1e39e4f354c355f98c13a7e5e84597d60a336f90facd65ab&id=' +
+      '1f38cc659898f3e982adfc9b433bdd24492661a4a295a79ef881235fe2ffa1175b85034ec31ef0c3d5293e1809e1d3fe=' +
       data.id.toString();
     return axiosClient.get(url);
   },
@@ -14,7 +14,7 @@ const API_REPORT = {
     const url =
       'danhmuc/khachhang?' +
       'access_token=' +
-      '1f38cc659898f3e982adfc9b433bdd2484faac30c5adebcd1e39e4f354c355f98c13a7e5e84597d60a336f90facd65ab';
+      '1f38cc659898f3e982adfc9b433bdd24492661a4a295a79ef881235fe2ffa1175b85034ec31ef0c3d5293e1809e1d3fe';
     return axiosClient.get(url);
   },
 
@@ -24,7 +24,7 @@ const API_REPORT = {
     idkhachhang?: number;
   }): Promise<any> {
     const url =
-      'reports/congnophaitra?access_token=1f38cc659898f3e982adfc9b433bdd2484faac30c5adebcd1e39e4f354c355f98c13a7e5e84597d60a336f90facd65ab';
+      'reports/congnophaitra?access_token=1f38cc659898f3e982adfc9b433bdd24492661a4a295a79ef881235fe2ffa1175b85034ec31ef0c3d5293e1809e1d3fe';
     return axiosClient.post(url, data);
   },
 
@@ -34,7 +34,7 @@ const API_REPORT = {
     idkhachhang?: number;
   }): Promise<any> {
     const url =
-      'reports/congnophaithu?access_token=1f38cc659898f3e982adfc9b433bdd2484faac30c5adebcd1e39e4f354c355f98c13a7e5e84597d60a336f90facd65ab';
+      'reports/congnophaithu?access_token=1f38cc659898f3e982adfc9b433bdd24492661a4a295a79ef881235fe2ffa1175b85034ec31ef0c3d5293e1809e1d3fe';
     return axiosClient.post(url, data);
   },
 
@@ -44,7 +44,7 @@ const API_REPORT = {
     idkhachhang?: number;
   }): Promise<any> {
     const url =
-      'reports/doanhthu?access_token=1f38cc659898f3e982adfc9b433bdd2484faac30c5adebcd1e39e4f354c355f98c13a7e5e84597d60a336f90facd65ab';
+      'reports/doanhthu?access_token=1f38cc659898f3e982adfc9b433bdd24492661a4a295a79ef881235fe2ffa1175b85034ec31ef0c3d5293e1809e1d3fe';
     return axiosClient.post(url, data);
   },
 };

@@ -20,7 +20,7 @@ import {
   useAppSelector,
 } from '../../../redux/hooks';
 import {Text, TouchableOpacity} from 'react-native';
-import {reportStore} from '../../../features';
+import {customerStore, reportStore} from '../../../features';
 import {postcongnophaitra} from '../../../features/report';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -33,10 +33,35 @@ function ReportDebitReturn({navigation, route}: any) {
   const [datatruyenvao, setDatatruyenvao] = useState({} as any);
   const congnotra = useAppSelector(reportStore);
   const [removedate, setRemovedate] = useState(1);
+  const [IDKH, setIDKH] = useState(null as any);
+  const [rangdate, setRangdate] = useState({} as any);
+  const [listData, setListData] = useState([] as any);
+  const customer = useAppSelector(customerStore);
   console.log('congnotra.listreport', congnotra.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
+
+    console.log(value);
+    let obj: any = customer.listCus.find(o => o.NameVi === value);
+    console.log('obj', obj.Id);
+    setIDKH(obj.Id);
+
+    if (rangdate.tungay) {
+      dispatch(
+        postcongnophaitra({
+          idkhachhang: obj.Id,
+        }),
+      );
+    } else {
+      dispatch(
+        postcongnophaitra({
+          idkhachhang: obj.Id,
+          tungay: rangdate.tungay,
+          denngay: rangdate.denngay,
+        }),
+      );
+    }
   };
 
   const onChangeTextCus = (value: any) => {
@@ -46,6 +71,9 @@ function ReportDebitReturn({navigation, route}: any) {
   console.log('route', route);
   console.log('navigation', navigation);
   const onRefresh = React.useCallback(() => {
+    setValueCus('');
+    setIDKH(null);
+    setRangdate({})
     setRemovedate(pre => pre + 1);
     setRefreshing(true);
     setRefreshing(false);
@@ -60,6 +88,19 @@ function ReportDebitReturn({navigation, route}: any) {
     dispatch(postcongnophaitra(datatruyenvao));
     setLoading(true);
   }, [navigation]);
+
+  useEffect(() => {
+    let arrName = [] as any;
+    async function getNameCustomer() {
+      customer.listCus.map(e => {
+        arrName.push(e.NameVi);
+      });
+    }
+
+    getNameCustomer();
+
+    setListData(arrName);
+  }, [customer.listCus]);
 
   const renderRow = ({item}: any, navigation: any) => (
     <TouchableOpacity
@@ -136,13 +177,27 @@ function ReportDebitReturn({navigation, route}: any) {
           value={removedate}
           onConfirm={(e: any) => {
             console.log('onConfirm', e);
-
-            dispatch(
-              postcongnophaitra({
-                tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-                denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
-              }),
-            );
+            setRangdate({
+              tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+              denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+            });
+            if (IDKH) {
+              dispatch(
+                postcongnophaitra({
+                  idkhachhang: IDKH,
+                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                }),
+              );
+            } else {
+              dispatch(
+                postcongnophaitra({
+                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                }),
+              );
+            }
+            
           }}
         />
 
@@ -164,7 +219,7 @@ function ReportDebitReturn({navigation, route}: any) {
           <SearchDropDown
             label="Khách hàng"
             value={valueCus}
-            data={listports}
+            data={listData}
             onPress={onPressCus}
             onChangeText={onChangeTextCus}
           />
@@ -283,85 +338,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export const dataTest = [
-  {
-    id: 1,
-    makhachhang: 'KH1',
-    tenkhachhang: 'khach hang 01',
-    madh: 'DH01',
-    tenhang: 'Hàng loại 1',
-    sotien: 1000000,
-    ngaymo: '09/05/2022',
-    soluong: '10',
-    noidi: 'Bắc Ninh',
-    noiden: 'Cà Mau',
-    sobill: 'DHL001',
-    ghichu: '123',
-    cothue: true,
-    tttt: false,
-    phantramthue: 8,
-    tiensauthue: 2000000,
-    loinhuan: 2000000,
-  },
-  {
-    id: 2,
-    makhachhang: 'KH2',
-    tenkhachhang: 'khach hang 02',
-    madh: 'DH02',
-    tenhang: 'Hàng loại 2',
-    sotien: 6000000,
-    ngaymo: '05/12/2022',
-    soluong: '20',
-    noidi: 'Bắc Ninh',
-    noiden: 'Cà Mau',
-    sobill: 'DHL002',
-    ghichu: '',
-    cothue: false,
-    tttt: false,
-    phantramthue: 0,
-    tiensauthue: 6800000,
-    loinhuan: 2000000,
-  },
-
-  {
-    id: 3,
-    makhachhang: 'KH3',
-    tenkhachhang: 'khach hang 03',
-    madh: 'DH03',
-    tenhang: 'Hàng loại 3',
-    ngaymo: '09/05/2022',
-    sotien: 2000000,
-    soluong: '30',
-    noidi: 'Bắc Ninh',
-    noiden: 'Cà Mau',
-    sobill: 'DHL003',
-    ghichu: '',
-    cothue: true,
-    tttt: false,
-    phantramthue: 8,
-    tiensauthue: 6800000,
-    loinhuan: 2000000,
-  },
-
-  {
-    id: 4,
-    makhachhang: 'KH4',
-    tenkhachhang: 'khach hang 04',
-    madh: 'DH04',
-    tenhang: 'Hàng loại 4',
-    ngaymo: '08/05/2022',
-    sotien: 6000,
-    soluong: '40',
-    noidi: 'Bắc Ninh',
-    noiden: 'Cà Mau',
-    sobill: 'DHL004',
-    ghichu: '',
-    cothue: true,
-    tttt: false,
-    phantramthue: 8,
-    tiensauthue: 6800000,
-    loinhuan: 2000000,
-  },
-];
 
 export const listports = ['Kh1', 'Kh2', 'KH3', 'KH4'];

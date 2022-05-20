@@ -8,10 +8,7 @@ export const postLogin = createAsyncThunk(
   async (data: LoginType, {rejectWithValue}) => {
     console.log('data login', data);
     try {
-      const response = await accountAPI.postLogin({
-        username: 'admin',
-        password: '123456a$',
-      });
+      const response = await accountAPI.postLogin(data);
       return response;
     } catch (err: any) {
       console.log('errrrrrrrrrrrrr', err.response.config.data);

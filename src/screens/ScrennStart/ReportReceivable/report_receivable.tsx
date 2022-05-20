@@ -20,7 +20,7 @@ import {
   useAppSelector,
 } from '../../../redux/hooks';
 import {Text, TouchableOpacity} from 'react-native';
-import {reportStore} from '../../../features';
+import {customerStore, reportStore} from '../../../features';
 import {postcongnophaithu} from '../../../features/report';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -33,10 +33,34 @@ function ReportReceivable({navigation, route}: any) {
   const [datatruyenvao, setDatatruyenvao] = useState({} as any);
   const congnothu = useAppSelector(reportStore);
   const [removedate, setRemovedate] = useState(1);
+  const [IDKH, setIDKH] = useState(null as any);
+  const [rangdate, setRangdate] = useState({} as any);
+  const [listData, setListData] = useState([] as any);
+  const customer = useAppSelector(customerStore);
   console.log('congnothu.listreport', congnothu.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
+    console.log(value);
+    let obj: any = customer.listCus.find(o => o.NameVi === value);
+    console.log('obj', obj.Id);
+    setIDKH(obj.Id);
+
+    if (rangdate.tungay) {
+      dispatch(
+        postcongnophaithu({
+          idkhachhang: obj.Id,
+        }),
+      );
+    } else {
+      dispatch(
+        postcongnophaithu({
+          idkhachhang: obj.Id,
+          tungay: rangdate.tungay,
+          denngay: rangdate.denngay,
+        }),
+      );
+    }
   };
 
   const onChangeTextCus = (value: any) => {
@@ -46,6 +70,9 @@ function ReportReceivable({navigation, route}: any) {
   console.log('route', route);
   console.log('navigation', navigation);
   const onRefresh = React.useCallback(() => {
+    setValueCus('');
+    setIDKH(null);
+    setRangdate({});
     setRemovedate(pre => pre + 1);
     setRefreshing(true);
     setRefreshing(false);
@@ -60,6 +87,19 @@ function ReportReceivable({navigation, route}: any) {
     dispatch(postcongnophaithu(datatruyenvao));
     setLoading(true);
   }, [navigation]);
+
+  useEffect(() => {
+    let arrName = [] as any;
+    async function getNameCustomer() {
+      customer.listCus.map(e => {
+        arrName.push(e.NameVi);
+      });
+    }
+
+    getNameCustomer();
+
+    setListData(arrName);
+  }, [customer.listCus]);
 
   const renderRow = ({item}: any, navigation: any) => (
     <TouchableOpacity
@@ -136,12 +176,26 @@ function ReportReceivable({navigation, route}: any) {
           value={removedate}
           onConfirm={(e: any) => {
             console.log('onConfirm', e);
-            dispatch(
-              postcongnophaithu({
-                tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-                denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
-              }),
-            );
+            setRangdate({
+              tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+              denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+            });
+            if (IDKH) {
+              dispatch(
+                postcongnophaithu({
+                  idkhachhang: IDKH,
+                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                }),
+              );
+            } else {
+              dispatch(
+                postcongnophaithu({
+                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                }),
+              );
+            }
           }}
         />
 
@@ -163,7 +217,7 @@ function ReportReceivable({navigation, route}: any) {
           <SearchDropDown
             label="Khách hàng"
             value={valueCus}
-            data={listports}
+            data={listData}
             onPress={onPressCus}
             onChangeText={onChangeTextCus}
           />

@@ -56,17 +56,6 @@ const Login = ({navigation}: any) => {
       NotifiToast('Vui lòng điền tài khoản mật khẩu');
     } else {
       dispatch(postLogin(data));
-
-      // console.log("Đăng nhập");
-
-      // dispatch(getdonhang({id: 3}));
-      // dispatch(
-      //   postcongnophaitra({
-      //     // tungay: '19/04/2022',
-      //     // denngay: '19/05/2022',
-      //     // idkhachhang: 3,
-      //   }),
-      // );
     }
   };
   const [username, setUsername] = useState('');
