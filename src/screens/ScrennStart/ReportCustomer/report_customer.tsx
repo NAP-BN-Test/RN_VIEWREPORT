@@ -45,9 +45,9 @@ function ReportCustomer({navigation, route}: any) {
   const onPressCus = (value: any) => {
     setValueCus(value);
 
-    console.log(value);
+    // console.log(value);
     let obj: any = customer.listCus.find(o => o.NameVi === value);
-    console.log('obj', obj.Id);
+    // console.log('obj', obj.Id);
     setIDKH(obj.Id);
 
     if (rangdate.tungay) {
@@ -71,8 +71,8 @@ function ReportCustomer({navigation, route}: any) {
     setValueCus(value);
   };
 
-  console.log('route', route);
-  console.log('navigation', navigation);
+  // console.log('route', route);
+  // console.log('navigation', navigation);
   const onRefresh = React.useCallback(() => {
     setRemovedate(pre => pre + 1);
     setValueCus('');

@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit';
-import { postLogin, postLogout } from '.';
-import { token } from '../../commom/api';
+import {ActionReducerMapBuilder, createSlice} from '@reduxjs/toolkit';
+import {postLogin, postLogout} from '.';
+import {token} from '../../commom/api';
 import NotifiToast from '../../component/notifiToast/toast';
-import { Account, CustomesAccount } from '../../types';
-import { retriveDataToken } from '../../_helpers/auth-header';
+import {Account, CustomesAccount} from '../../types';
+import {retriveDataToken} from '../../_helpers/auth-header';
+import {autologin} from './patch-api';
 const initialStateAccount: CustomesAccount = {
   listuser: {} as Account,
   loading: false,
@@ -17,10 +18,9 @@ const accountSlice = createSlice({
   initialState: initialStateAccount,
   reducers: {
     loginFake: state => {
-      let token: any = retriveDataToken()
+      // let token: any = retriveDataToken();
+      console.log('loginFake', token._W);
 
-      
-      state.token = token._W;
       state.listuser = {
         id: 1,
         username: 'Ecomex',
@@ -32,9 +32,11 @@ const accountSlice = createSlice({
         editdate: 'string',
       };
       if (token._W) {
-        NotifiToast('Đăng nhập thành công');
-      }else{
-        NotifiToast('Đăng nhập không thành công');
+        state.token = token._W;
+        NotifiToast('Đăng nhập tự động thành công');
+      } else {
+        state.token = null;
+        NotifiToast('Đăng nhập tự động không thành công');
       }
     },
   },
@@ -45,7 +47,7 @@ const accountSlice = createSlice({
         state.loading = true;
       })
       .addCase(postLogin.fulfilled, (state, action: any) => {
-        console.log('action.payload');
+        console.log('action.payload', action.payload);
 
         state.listuser = {
           id: 1,
@@ -69,7 +71,39 @@ const accountSlice = createSlice({
         state.loading = false;
         state.error = true; //Show lỗi
         console.log('Đăng nhập không thành công');
-        NotifiToast('Đăng nhập không thành công');
+        // NotifiToast('Đăng nhập không thành công');
+      });
+
+    // login auto
+    builder
+      .addCase(autologin.pending, state => {
+        state.loading = true;
+      })
+      .addCase(autologin.fulfilled, (state, action: any) => {
+        console.log('action.payload', action.payload);
+
+        state.listuser = {
+          id: 1,
+          username: 'Ecomex',
+          password: '123456',
+          phonenumber: '033396588',
+          email: 'Ecomex@gmail.com',
+          address: 'string',
+          createdate: 'string',
+          editdate: 'string',
+        };
+        state.token = action.payload;
+        state.loading = false;
+        state.error = false;
+        // dispatch(isLoadingGL(true))
+        // AsyncStorage.setItem("user", queryString.stringify(listuser));
+        console.log('Đăng nhập tự động thành công');
+      })
+      .addCase(autologin.rejected, state => {
+        state.loading = false;
+        state.error = true; //Show lỗi
+        console.log('Đăng nhập tự động không thành công');
+        // NotifiToast('Đăng nhập không thành công');
       });
     //  log out the user
     builder.addCase(postLogout.fulfilled, state => {
@@ -80,7 +114,6 @@ const accountSlice = createSlice({
       NotifiToast('Đã đăng xuất');
       console.log('Đã đăng xuất');
     });
-    
   },
 });
 

@@ -21,8 +21,6 @@ export function authHeader() {
 /*Get token  */
 export const retriveDataToken = async () => {
   let value: string = (await AsyncStorage.getItem('token')) || '';
-  console.log('value token', value);
-
   return value;
   // return JSON.parse(value);
 };

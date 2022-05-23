@@ -1,1 +1,1 @@
-export const REACT_APP_API_URL = "http://webapi.namanphu.vn/ecomex/api/";
+export const REACT_APP_API_URL = "https://webapi.namanphu.vn/ecomex/api/";

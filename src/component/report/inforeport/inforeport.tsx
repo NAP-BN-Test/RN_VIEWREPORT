@@ -13,7 +13,7 @@ import {customerStore, reportStore} from '../../../features';
 import Loading from '../../loading/loading';
 import stylesGlobal from '../../../assets/css/cssGlobal';
 function Inforeport({navigation: {goBack}, ...props}: any) {
-  console.log(props.route.params.item);
+  console.log('item', props.route.params.item.Id);
   console.log(props.route);
   const dispatch = useDispatch();
 

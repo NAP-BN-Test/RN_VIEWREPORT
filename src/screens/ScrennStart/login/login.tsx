@@ -9,7 +9,7 @@ import ModalPoup from '../../../component/Modal/Modal';
 import NotifiToast from '../../../component/notifiToast/toast';
 import Notify from '../../../component/Notify/Notify';
 import {accountStore} from '../../../features';
-import {loginFake, postLogin} from '../../../features/account';
+import {autologin, loginFake, postLogin} from '../../../features/account';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {LoginType} from '../../../types';
 import {styles} from './styleLogin';
@@ -40,10 +40,13 @@ const Login = ({navigation}: any) => {
     }
   }, [resultAccount.loading]);
 
+  
+
   useEffect(() => {
+    
     if (token) {
-      console.log('token', token._W);
-      dispatch(loginFake());
+      console.log('token login', token._W);
+      dispatch(autologin());
       //Gọi đến hàm check token
       //Có sẽ login
       //Không sẽ logout ra màn login
