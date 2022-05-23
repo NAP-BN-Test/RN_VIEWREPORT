@@ -7,8 +7,9 @@ const API_REPORT = {
 
     let value: any = (await AsyncStorage.getItem('token')) || '';
     const accessToken: any = value;
-    
-    const url = 'donhang?' + 'access_token=' + accessToken + data.id.toString();
+
+    const url =
+      'donhang?' + 'access_token=' + accessToken + '&id=' + data.id.toString();
     return axiosClient.get(url);
   },
 

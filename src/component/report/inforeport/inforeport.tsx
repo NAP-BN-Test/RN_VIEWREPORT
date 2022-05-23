@@ -16,6 +16,7 @@ function Inforeport({navigation: {goBack}, ...props}: any) {
   console.log('item', props.route.params.item.Id);
   console.log(props.route);
   const dispatch = useDispatch();
+  const customer = useAppSelector(customerStore);
 
   useEffect(() => {
     if (props.route.params.item.Id) {
@@ -24,7 +25,6 @@ function Inforeport({navigation: {goBack}, ...props}: any) {
   }, [props.route.params.item.Id]);
 
   const donhang = useAppSelector(reportStore);
-  
 
   return donhang.loading && donhang.order.Id ? (
     <View style={[stylesGlobal.flex_center, {height: '80%'}]}>
@@ -40,7 +40,12 @@ function Inforeport({navigation: {goBack}, ...props}: any) {
             <Text style={styles.itemSubtitle}>Tên khách hàng</Text>
 
             <Text style={[{fontSize: 16, color: colors.redcustom}]}>
-              {donhang.order.CustomerName}
+              {/* {donhang.order.CustomerName} */}
+              {
+                customer.listCus?.filter(
+                  e => donhang.order?.Idreceiver === e.Id,
+                )[0]?.NameVi
+              }
             </Text>
           </View>
 

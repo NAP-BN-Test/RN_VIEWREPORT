@@ -115,7 +115,8 @@ function ReportReceivable({navigation, route}: any) {
         <View style={styles.itemContent}>
           <Text
             style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
-            {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName}
+              {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
+            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}

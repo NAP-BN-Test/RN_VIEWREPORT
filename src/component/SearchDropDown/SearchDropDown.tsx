@@ -16,9 +16,9 @@ export default function SearchDropDown({
   const [zIndex, setzIndex] = useState(0);
   const [top, settop] = useState(0);
 
-  // useEffect(() => {
-  //   setFiltered(data.slice(0, 0));
-  // }, [data]);
+  useEffect(() => {
+    setFiltered(data.slice(0, 50));
+  }, [data]);
 
   useEffect(() => {
     setSearchQuery(value ? value : '');

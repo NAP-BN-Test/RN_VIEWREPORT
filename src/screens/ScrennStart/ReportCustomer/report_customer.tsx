@@ -39,7 +39,7 @@ function ReportCustomer({navigation, route}: any) {
   const doanhthu = useAppSelector(reportStore);
   const customer = useAppSelector(customerStore);
 
-  // console.log('customer', customer);
+  console.log('customer', customer);
   // console.log('doanhthu.listreport', doanhthu.listreport);
 
   const onPressCus = (value: any) => {
@@ -77,7 +77,7 @@ function ReportCustomer({navigation, route}: any) {
     setRemovedate(pre => pre + 1);
     setValueCus('');
     setIDKH(null);
-    setRangdate({})
+    setRangdate({});
     setRefreshing(true);
     setRefreshing(false);
     dispatch(postdoanhthu(datatruyenvao));
@@ -119,7 +119,8 @@ function ReportCustomer({navigation, route}: any) {
         <View style={styles.itemContent}>
           <Text
             style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
-            {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName}
+            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi}
+            {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}

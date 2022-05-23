@@ -73,7 +73,7 @@ function ReportDebitReturn({navigation, route}: any) {
   const onRefresh = React.useCallback(() => {
     setValueCus('');
     setIDKH(null);
-    setRangdate({})
+    setRangdate({});
     setRemovedate(pre => pre + 1);
     setRefreshing(true);
     setRefreshing(false);
@@ -116,7 +116,8 @@ function ReportDebitReturn({navigation, route}: any) {
         <View style={styles.itemContent}>
           <Text
             style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
-            {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName}
+              {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
+            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
@@ -197,7 +198,6 @@ function ReportDebitReturn({navigation, route}: any) {
                 }),
               );
             }
-            
           }}
         />
 
@@ -337,6 +337,5 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
-
 
 export const listports = ['Kh1', 'Kh2', 'KH3', 'KH4'];
