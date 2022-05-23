@@ -1,0 +1,51 @@
+import queryString from 'query-string';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
+import {REACT_APP_API_URL} from './apiKey';
+import 'react-native-url-polyfill/auto';
+import { retriveDataToken } from '../../_helpers/auth-header'
+// export var token: any = AsyncStorage.getItem('token');
+export var token: any = retriveDataToken();
+
+/*Axios */
+
+const axiosClientLogin = axios.create({
+  baseURL: REACT_APP_API_URL,
+  headers: {
+    'content-type': "application/x-www-form-urlencoded",
+    'Access-Control-Allow-Origin': '*',
+  },
+  paramsSerializer: (params: any) => queryString.stringify(params),
+});
+
+axiosClientLogin.interceptors.request.use(
+  //   (config: AxiosRequestConfig) => {
+  async(config: any) => {
+    let value: any = (await AsyncStorage.getItem('token')) || '';
+    
+    // const accessToken: any = value;
+    // console.log(accessToken, accessToken);
+
+    // if (accessToken) {
+    //   config.headers.Authorization = `Bearer ${accessToken}`;
+    // }
+    return config;
+  },
+  function error() {
+    return Promise.reject(error);
+  },
+);
+
+axiosClientLogin.interceptors.response.use(
+  (response: AxiosResponse) => {
+    if (response && response.data) {
+      return response.data;
+    }
+    return response;
+  },
+  (error: string) => {
+    throw error;
+  },
+);
+
+export default axiosClientLogin;

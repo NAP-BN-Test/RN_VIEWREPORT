@@ -13,7 +13,7 @@ function RootStackScreen() {
 
   return (
     <View style={styles.container}>
-      {!resultAccount.token ? <AppStackScreen /> : <AuthStackScreen />}
+      {resultAccount.token ? <AppStackScreen /> : <AuthStackScreen />}
       {/* <AuthStackScreen /> */}
       <ModalPoup visible={LoadingGl.status}>
         <Loading />
