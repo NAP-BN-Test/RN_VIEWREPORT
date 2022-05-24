@@ -73,7 +73,7 @@ const Login = ({navigation}: any) => {
           {/* <Text style={styles.title}>Ecomex</Text> */}
           <TextInput
             style={styles.input}
-            placeholder="E-mail"
+            placeholder="User Name"
             placeholderTextColor="#aaaaaa"
             onChangeText={text => setUsername(text)}
             value={username}
