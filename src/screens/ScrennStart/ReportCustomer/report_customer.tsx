@@ -47,7 +47,7 @@ function ReportCustomer({navigation, route}: any) {
 
     // console.log(value);
     let obj: any = customer.listCus.find(o => o.NameVi === value);
-    // console.log('obj', obj.Id);
+    console.log('obj', obj.Id);
     setIDKH(obj.Id);
 
     if (rangdate.tungay) {

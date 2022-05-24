@@ -12,7 +12,7 @@ export var token: any = retriveDataToken();
 const axiosClient = axios.create({
   baseURL: REACT_APP_API_URL,
   headers: {
-    'content-type': 'application/json',
+    'content-type': 'application/x-www-form-urlencoded',
     'Access-Control-Allow-Origin': '*',
   },
   responseType: 'json',
