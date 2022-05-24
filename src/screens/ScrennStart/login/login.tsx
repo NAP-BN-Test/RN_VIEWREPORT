@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {ImageBackground, Text, TouchableOpacity, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -40,10 +40,7 @@ const Login = ({navigation}: any) => {
     }
   }, [resultAccount.loading]);
 
-  
-
   useEffect(() => {
-    
     if (token) {
       console.log('token login', token._W);
       dispatch(autologin());
@@ -66,39 +63,45 @@ const Login = ({navigation}: any) => {
   const [visible, setVisible] = React.useState(false);
 
   return (
-    <View style={[styles.container, {padding: 20}]}>
-      <View>
-        <Text style={styles.title}>Đăng nhập</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={text => setUsername(text)}
-          value={username}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
-          secureTextEntry
-          placeholder="Password"
-          onChangeText={text => setPassword(text)}
-          value={password}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() =>
-            handlePostLogin({
-              username: username,
-              password: password,
-            })
-          }>
-          <Text style={styles.buttonTitle}>Đăng nhập</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={[styles.container]}>
+      <ImageBackground
+        source={require('../../../assets/img/bg.jpg')}
+        style={styles.bgImage}
+        resizeMode="cover">
+        <View
+          style={{paddingHorizontal: 20, position: 'absolute', width: '100%', bottom: 100}}>
+          {/* <Text style={styles.title}>Đăng nhập</Text> */}
+          <TextInput
+            style={styles.input}
+            placeholder="E-mail"
+            placeholderTextColor="#aaaaaa"
+            onChangeText={text => setUsername(text)}
+            value={username}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholderTextColor="#aaaaaa"
+            secureTextEntry
+            placeholder="Password"
+            onChangeText={text => setPassword(text)}
+            value={password}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              handlePostLogin({
+                username: username,
+                password: password,
+              })
+            }>
+            <Text style={styles.buttonTitle}>Đăng nhập</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
 
       <ModalPoup visible={visible}>
         <Notify

@@ -3,9 +3,17 @@ import colors from '../../../assets/css/color'
 export const styles = StyleSheet.create({
     container: {
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       height: '100%',
-      flexDirection: 'column',
+      // flexDirection: 'column',
+      // alignItems: 'center'
+      position: 'relative'
+    },
+    bgImage: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
+      // marginHorizontal: -20,
     },
     title: {
       fontSize: 24,
