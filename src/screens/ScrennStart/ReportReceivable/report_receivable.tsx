@@ -114,9 +114,9 @@ function ReportReceivable({navigation, route}: any) {
         {/* <Image source={{uri: item.image}} style={styles.itemImage} /> */}
         <View style={styles.itemContent}>
           <Text
-            style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
+            style={[styles.itemBrand, {fontSize: 16, color: colors.black}]}>
               {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
-            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi}
+            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi?.toUpperCase()}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
@@ -152,7 +152,7 @@ function ReportReceivable({navigation, route}: any) {
           </View>
           {/* <View style={styles.itemMetaContainer}>
             {item.id && (
-              <View style={[styles.badge, {backgroundColor: colors.redcustom}]}>
+              <View style={[styles.badge, {backgroundColor: colors.black}]}>
                 <Text
                   style={{fontSize: 10, color: colors.white}}
                   //   styleName="bright"
@@ -161,7 +161,7 @@ function ReportReceivable({navigation, route}: any) {
                 </Text>
               </View>
             )}
-            <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
+            <Text style={[styles.itemPrice, {color: colors.black}]}>
               Lợi nhuận: {item.LoiNhuan.toLocaleString('vi-VN')}
             </Text>
           </View> */}
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#617ae1',
     paddingBottom: 5,
-    // fontWeight: '600',
+    fontWeight: '600',
     fontFamily: fonts.primaryRegular,
   },
   itemTitle: {
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   },
   itemSubtitle: {
     fontSize: 12,
-    color: '#a4a4a4',
+    color: '#000',
     fontFamily: fonts.primaryRegular,
   },
   itemMetaContainer: {

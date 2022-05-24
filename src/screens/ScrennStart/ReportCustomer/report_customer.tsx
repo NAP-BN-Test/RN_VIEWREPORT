@@ -118,8 +118,8 @@ function ReportCustomer({navigation, route}: any) {
         {/* <Image source={{uri: item.image}} style={styles.itemImage} /> */}
         <View style={styles.itemContent}>
           <Text
-            style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
-            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi}
+            style={[styles.itemBrand, {fontSize: 16, color: colors.black, }]}>
+            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi?.toUpperCase()}
             {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
@@ -165,7 +165,7 @@ function ReportCustomer({navigation, route}: any) {
                 </Text>
               </View>
             )}
-            <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
+            <Text style={[styles.itemPrice, {color: colors.black}]}>
               {/* {currency(SpendingBD.totalmoney)}  */}
               Lợi nhuận: {item.LoiNhuan.toLocaleString('vi-VN')}
             </Text>
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#617ae1',
     paddingBottom: 5,
-    // fontWeight: '600',
+    fontWeight: '600',
     fontFamily: fonts.primaryRegular,
   },
   itemTitle: {
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   },
   itemSubtitle: {
     fontSize: 12,
-    color: '#a4a4a4',
+    color: '#000',
     fontFamily: fonts.primaryRegular,
   },
   itemMetaContainer: {

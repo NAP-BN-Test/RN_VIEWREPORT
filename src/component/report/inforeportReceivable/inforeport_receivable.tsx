@@ -9,7 +9,7 @@ import {
   useAppSelector,
 } from '../../../redux/hooks';
 import {getdonhang} from '../../../features/report';
-import {customerStore, reportStore} from '../../../features';
+import {customerStore, nccStore, reportStore} from '../../../features';
 import Loading from '../../loading/loading';
 import stylesGlobal from '../../../assets/css/cssGlobal';
 function InforeportReceivable({navigation: {goBack}, ...props}: any) {
@@ -17,6 +17,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
   console.log(props.route);
   const dispatch = useDispatch();
   const customer = useAppSelector(customerStore);
+  const ncc = useAppSelector(nccStore);
   useEffect(() => {
     if (props.route.params.item.Id) {
       dispatch(getdonhang({id: props.route.params.item.Id}));
@@ -39,11 +40,23 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
           <View style={[styles.itemMetaContainer]}>
             <Text style={styles.itemSubtitle}>Tên khách hàng</Text>
 
-            <Text style={[{fontSize: 16, color: colors.redcustom}]}>
+            <Text style={[{fontSize: 16, }, styles.itemSubtitle]}>
               {
                 customer.listCus?.filter(
                   e => donhang.order?.Idreceiver === e.Id,
                 )[0]?.NameVi
+              }
+            </Text>
+          </View>
+
+          <View style={[styles.itemMetaContainer]}>
+            <Text style={styles.itemSubtitle}>Tên nhà cung cấp</Text>
+
+            <Text style={[{fontSize: 16, }, styles.itemSubtitle]}>
+              {/* {donhang.order.IddmdichVuNavigation?.NameVi} */}
+              {
+                ncc.listCus?.filter(e => donhang.order?.IddmnhaCungCap === e.Id)[0]
+                  ?.NameVi
               }
             </Text>
           </View>
@@ -132,7 +145,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
           </View>
         </View>
       </View>
-      <View style={styles.itemHr} />
+      {/* <View style={styles.itemHr} />
       <Text style={styles.title}>GIÁ MUA</Text>
       <View style={styles.itemHr} />
       <View style={styles.itemSubContainer}>
@@ -141,7 +154,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Số tiền
             </Text>
-            <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
+            <Text style={[styles.itemPrice, {}]}>
               {donhang.order.GiaMua?.toLocaleString('vi-VN')}
             </Text>
           </View>
@@ -156,20 +169,12 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
             </Text>
           </View>
 
-          {/* <View style={[styles.itemMetaContainer]}>
-            <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Phần trăm thuế
-            </Text>
-            <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {donhang.order.phantramthue}
-            </Text>
-          </View> */}
 
           <View style={styles.itemMetaContainer}>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Tiền sau thuế
             </Text>
-            <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
+            <Text style={[styles.itemPrice, {}]}>
               {donhang.order.GiaMuaSauThue?.toLocaleString('vi-VN')}
             </Text>
           </View>
@@ -181,6 +186,53 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
 
             <Text style={styles.itemSubtitle}>
               {donhang.order.FlagTtthanhToanMua ? 'YES' : 'NO'}
+            </Text>
+          </View>
+        </View>
+      </View> */}
+
+
+      <View style={styles.itemHr} />
+      <Text style={styles.title}>GIÁ BÁN</Text>
+      <View style={styles.itemHr} />
+      <View style={styles.itemSubContainer}>
+        <View style={styles.itemContent}>
+          <View style={styles.itemMetaContainer}>
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              Số tiền
+            </Text>
+            <Text style={[styles.itemPrice, {}]}>
+              {donhang.order.GiaBan?.toLocaleString('vi-VN')}
+            </Text>
+          </View>
+
+          <View style={[styles.itemMetaContainer]}>
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              Thuế
+            </Text>
+
+            <Text style={styles.itemSubtitle}>
+              {donhang.order.ThueBan ? 'YES' : 'NO'}
+            </Text>
+          </View>
+
+
+          <View style={styles.itemMetaContainer}>
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              Tiền sau thuế
+            </Text>
+            <Text style={[styles.itemPrice, {}]}>
+              {donhang.order.GiaBanSauThue?.toLocaleString('vi-VN')}
+            </Text>
+          </View>
+
+          <View style={[styles.itemMetaContainer]}>
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              TTTT
+            </Text>
+
+            <Text style={styles.itemSubtitle}>
+              {donhang.order.FlagTtthanhToanBan ? 'YES' : 'NO'}
             </Text>
           </View>
         </View>
@@ -248,7 +300,7 @@ const styles = StyleSheet.create({
   },
   itemSubtitle: {
     fontSize: 14,
-    color: '#a4a4a4',
+    color: '#000',
     fontFamily: fonts.primaryRegular,
   },
   itemMetaContainer: {
@@ -259,7 +311,7 @@ const styles = StyleSheet.create({
   },
   itemPrice: {
     fontSize: 14,
-    color: '#5f5f5f',
+    color: '#000',
     textAlign: 'right',
     fontFamily: fonts.primaryRegular,
   },
