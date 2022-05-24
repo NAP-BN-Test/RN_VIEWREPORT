@@ -30,7 +30,7 @@ export const getdonhang = createAsyncThunk(
 export const postcongnophaitra = createAsyncThunk(
   '/report/congnophaitra',
   async (
-    data: {tungay?: string; denngay?: string; idkhachhang?: number},
+    data: {tungay?: string; denngay?: string; idddmnhacungcap?: number},
     {rejectWithValue},
   ) => {
     console.log('postcongnophaitra', data);

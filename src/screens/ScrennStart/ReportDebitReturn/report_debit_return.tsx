@@ -50,13 +50,13 @@ function ReportDebitReturn({navigation, route}: any) {
     if (rangdate.tungay) {
       dispatch(
         postcongnophaitra({
-          idkhachhang: obj.Id,
+          idddmnhacungcap: obj.Id,
         }),
       );
     } else {
       dispatch(
         postcongnophaitra({
-          idkhachhang: obj.Id,
+          idddmnhacungcap: obj.Id,
           tungay: rangdate.tungay,
           denngay: rangdate.denngay,
         }),
@@ -186,7 +186,7 @@ function ReportDebitReturn({navigation, route}: any) {
             if (IDKH) {
               dispatch(
                 postcongnophaitra({
-                  idkhachhang: IDKH,
+                  idddmnhacungcap: IDKH,
                   tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
                   denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
                 }),

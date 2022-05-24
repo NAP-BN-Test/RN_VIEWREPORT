@@ -40,7 +40,7 @@ function ReportCustomer({navigation, route}: any) {
   const customer = useAppSelector(customerStore);
 
   console.log('customer', customer);
-  // console.log('doanhthu.listreport', doanhthu.listreport);
+  console.log('doanhthu.listreport', doanhthu.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
