@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Animated, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch} from 'react-redux';
@@ -9,11 +9,30 @@ import {accountStore} from '../../../features';
 import {postLogout} from '../../../features/account';
 import {useAppSelector} from '../../../redux/hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {retriveDataUser} from '../../../_helpers/auth-header';
 function AllOption({navigation}: any) {
   const dispatch = useDispatch();
   const handlePostLogOut = () => dispatch(postLogout());
   const resultAccount = useAppSelector(accountStore);
   const [visible, setVisible] = useState(false);
+  const [userName, setUserName] = useState('' as any);
+
+  useEffect(() => {
+    const retriveDataUser = async () => {
+      let value: string = (await AsyncStorage.getItem('username')) || '';
+      console.log('retriveDataUser', value);
+
+      setUserName(value);
+      return value;
+      // return JSON.parse(value);
+    };
+
+    retriveDataUser();
+
+    // let value: any =  AsyncStorage.getItem('username') || '';
+    // retriveDataUser();
+    // const usename: any = retriveDataUser();
+  }, [userName]);
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <ScrollView>
@@ -33,7 +52,7 @@ function AllOption({navigation}: any) {
                 paddingHorizontal: 20,
               }}
               // onPress={() => navigation.navigate('infouser')}
-              >
+            >
               <View
                 style={{
                   display: 'flex',
@@ -64,11 +83,14 @@ function AllOption({navigation}: any) {
                       marginBottom: 10,
                     }}>
                     <Text style={{fontSize: 30, color: '#fff'}}>
-                      {resultAccount.listuser.username.charAt(0).toUpperCase()}
+                      {userName.charAt(0).toUpperCase()}
+                      {/* {resultAccount.listuser.username.charAt(0).toUpperCase()} */}
                     </Text>
                   </View>
-                  <Text style={{marginBottom: 5, fontSize: 18, fontWeight: "600"}}>
-                    {resultAccount.listuser.username}
+                  <Text
+                    style={{marginBottom: 5, fontSize: 18, fontWeight: '600'}}>
+                    {userName}
+                    {/* {resultAccount.listuser.username} */}
                   </Text>
                   {/* <Text style={{marginBottom: 5}}>
                     {resultAccount.listuser.email}
@@ -84,8 +106,6 @@ function AllOption({navigation}: any) {
               /> */}
             </TouchableOpacity>
           </View>
-
-          
         </View>
 
         <View style={{paddingHorizontal: 50}}>
@@ -119,7 +139,10 @@ function AllOption({navigation}: any) {
           contentButtonRight="No"
           onPressButtonLeft={() => {
             setVisible(false);
-            AsyncStorage.setItem('token', resultAccount.token);
+            AsyncStorage.setItem(
+              'token',
+              resultAccount?.token ? resultAccount?.token : '',
+            );
           }}
           onPressButtonRigth={() => {
             setVisible(false);

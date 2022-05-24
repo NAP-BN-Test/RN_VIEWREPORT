@@ -24,3 +24,10 @@ export const retriveDataToken = async () => {
   return value;
   // return JSON.parse(value);
 };
+
+/*Get token  */
+export const retriveDataUser = async () => {
+  let value: string = (await AsyncStorage.getItem('username')) || '';
+  return value;
+  // return JSON.parse(value);
+};

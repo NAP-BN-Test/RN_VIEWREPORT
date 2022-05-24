@@ -19,11 +19,13 @@ const accountSlice = createSlice({
   reducers: {
     loginFake: state => {
       // let token: any = retriveDataToken();
+      let value: any = AsyncStorage.getItem('username') || '';
+
       console.log('loginFake', token._W);
 
       state.listuser = {
         id: 1,
-        username: 'Ecomex',
+        username: value,
         password: '123456',
         phonenumber: '033396588',
         email: 'Ecomex@gmail.com',
@@ -48,10 +50,12 @@ const accountSlice = createSlice({
       })
       .addCase(postLogin.fulfilled, (state, action: any) => {
         console.log('action.payload', action.payload);
+        let value: any = AsyncStorage.getItem('username') || '';
+        console.log('username',value);
 
         state.listuser = {
           id: 1,
-          username: 'Ecomex',
+          username: value._W,
           password: '123456',
           phonenumber: '033396588',
           email: 'Ecomex@gmail.com',
@@ -81,10 +85,12 @@ const accountSlice = createSlice({
       })
       .addCase(autologin.fulfilled, (state, action: any) => {
         console.log('action.payload', action.payload);
-
+        let value: any = AsyncStorage.getItem('username') || '';
+        console.log('usename',value);
+        
         state.listuser = {
           id: 1,
-          username: 'Ecomex',
+          username: value._W,
           password: '123456',
           phonenumber: '033396588',
           email: 'Ecomex@gmail.com',

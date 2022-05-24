@@ -13,6 +13,10 @@ import {autologin, loginFake, postLogin} from '../../../features/account';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {LoginType} from '../../../types';
 import {styles} from './styleLogin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { AsyncStorage } from 'react-native';
+
+
 // import {useNavigation} from '@react-navigation/native';
 const iconWhat = <Icon name="whatsapp" size={38} color="#961d1d" />;
 const iconFB = (
@@ -55,6 +59,7 @@ const Login = ({navigation}: any) => {
     if (data.username == '' || data.password == '') {
       NotifiToast('Vui lòng điền tài khoản mật khẩu');
     } else {
+      AsyncStorage.setItem('username', data.username);
       dispatch(postLogin(data));
     }
   };
