@@ -9,13 +9,14 @@ import {
   useAppSelector,
 } from '../../../redux/hooks';
 import {getdonhang} from '../../../features/report';
-import {reportStore} from '../../../features';
+import {nccStore, reportStore} from '../../../features';
 import Loading from '../../loading/loading';
 import stylesGlobal from '../../../assets/css/cssGlobal';
 function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
   console.log(props.route.params.item);
   console.log(props.route);
   const dispatch = useDispatch();
+  const ncc = useAppSelector(nccStore);
 
   useEffect(() => {
     if (props.route.params.item.Id) {
@@ -25,7 +26,7 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
 
   const donhang = useAppSelector(reportStore);
   console.log('donhang', donhang.order);
-  
+
   return donhang.loading && donhang.order.Id ? (
     <View style={[stylesGlobal.flex_center, {height: '80%'}]}>
       <Loading />
@@ -40,7 +41,11 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
             <Text style={styles.itemSubtitle}>Tên nhà cung cấp</Text>
 
             <Text style={[{fontSize: 16, color: colors.redcustom}]}>
-              {donhang.order.IddmdichVuNavigation?.NameVi}
+              {/* {donhang.order.IddmdichVuNavigation?.NameVi} */}
+              {
+                ncc.listCus?.filter(e => donhang.order?.IddmnhaCungCap === e.Id)[0]
+                  ?.NameVi
+              }
             </Text>
           </View>
 
@@ -190,8 +195,6 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
           </View>
         </View>
       </View>
-
-      
     </ScrollView>
   );
 }

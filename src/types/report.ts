@@ -43,6 +43,7 @@ export interface report {
   EnumVatmua: number;
   EnumVatban: number;
   IddmdichVuNavigation: any;
+  IddmnhaCungCap: number;
 }
 
 export interface customReport {
