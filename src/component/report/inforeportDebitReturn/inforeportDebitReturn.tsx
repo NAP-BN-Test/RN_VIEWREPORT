@@ -37,10 +37,10 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
       <View style={styles.itemSubContainer}>
         <View style={styles.itemContent}>
           <View style={[styles.itemMetaContainer]}>
-            <Text style={styles.itemSubtitle}>Tên khách hàng</Text>
+            <Text style={styles.itemSubtitle}>Tên nhà cung cấp</Text>
 
             <Text style={[{fontSize: 16, color: colors.redcustom}]}>
-              {donhang.order.CustomerName}
+              {donhang.order.IddmdichVuNavigation?.NameVi}
             </Text>
           </View>
 
@@ -79,6 +79,14 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
 
             <Text style={styles.itemSubtitle}>
               {donhang.order.EnumVatban?.toLocaleString('vi-VN')}
+            </Text>
+          </View>
+          <View style={[styles.itemMetaContainer]}>
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              Loại dịch vụ
+            </Text>
+            <Text style={styles.itemSubtitle} numberOfLines={1}>
+              {donhang.order.IddmdichVuNavigation?.NameVi}
             </Text>
           </View>
           <View style={[styles.itemMetaContainer]}>

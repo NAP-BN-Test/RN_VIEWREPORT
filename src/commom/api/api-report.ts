@@ -21,6 +21,14 @@ const API_REPORT = {
     return axiosClient.get(url);
   },
 
+  async getdanhmucnhacungcap(): Promise<any> {
+    let value: any = (await AsyncStorage.getItem('token')) || '';
+
+    const accessToken: any = value;
+    const url = 'danhmuc/nhacungcap?' + 'access_token=' + accessToken;
+    return axiosClient.get(url);
+  },
+
   async postcongnophaitra(data: {
     tungay?: string;
     denngay?: string;

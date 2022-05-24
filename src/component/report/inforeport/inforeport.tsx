@@ -37,7 +37,7 @@ function Inforeport({navigation: {goBack}, ...props}: any) {
       <View style={styles.itemSubContainer}>
         <View style={styles.itemContent}>
           <View style={[styles.itemMetaContainer]}>
-            <Text style={styles.itemSubtitle}>Tên khách hàng</Text>
+            <Text style={styles.itemSubtitle}>Tên nhà cy</Text>
 
             <Text style={[{fontSize: 16, color: colors.redcustom}]}>
               {/* {donhang.order.CustomerName} */}

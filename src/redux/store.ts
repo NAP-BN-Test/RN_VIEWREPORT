@@ -3,6 +3,7 @@ import counterReducer from '../component/counterSlice/counterSlice';
 import accountReducer from '../features/account/account-slice';
 import reportReducer from '../features/report/report-slice';
 import customerReducer from '../features/customer/customer-slice';
+import nccReducer from '../features/ncc/ncc-slice';
 import loadingGlobalReducer from '../features/loadingGlobal/loadingGlobal-slice';
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     account: accountReducer,
     report: reportReducer,
     customer: customerReducer,
+    ncc: nccReducer,
     loadingGlobalStore: loadingGlobalReducer,
   },
 });

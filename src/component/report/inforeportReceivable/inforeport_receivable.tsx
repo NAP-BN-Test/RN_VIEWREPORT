@@ -9,14 +9,14 @@ import {
   useAppSelector,
 } from '../../../redux/hooks';
 import {getdonhang} from '../../../features/report';
-import {reportStore} from '../../../features';
+import {customerStore, reportStore} from '../../../features';
 import Loading from '../../loading/loading';
 import stylesGlobal from '../../../assets/css/cssGlobal';
 function InforeportReceivable({navigation: {goBack}, ...props}: any) {
   console.log(props.route.params.item);
   console.log(props.route);
   const dispatch = useDispatch();
-
+  const customer = useAppSelector(customerStore);
   useEffect(() => {
     if (props.route.params.item.Id) {
       dispatch(getdonhang({id: props.route.params.item.Id}));
@@ -25,7 +25,7 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
 
   const donhang = useAppSelector(reportStore);
   console.log('donhang', donhang.order);
-  
+
   return donhang.loading && donhang.order.Id ? (
     <View style={[stylesGlobal.flex_center, {height: '80%'}]}>
       <Loading />
@@ -40,7 +40,11 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
             <Text style={styles.itemSubtitle}>Tên khách hàng</Text>
 
             <Text style={[{fontSize: 16, color: colors.redcustom}]}>
-              {donhang.order.CustomerName}
+              {
+                customer.listCus?.filter(
+                  e => donhang.order?.Idreceiver === e.Id,
+                )[0]?.NameVi
+              }
             </Text>
           </View>
 
@@ -181,7 +185,6 @@ function InforeportReceivable({navigation: {goBack}, ...props}: any) {
           </View>
         </View>
       </View>
-
     </ScrollView>
   );
 }

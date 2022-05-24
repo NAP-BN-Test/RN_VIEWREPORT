@@ -42,6 +42,7 @@ export interface report {
   LoiNhuan: number;
   EnumVatmua: number;
   EnumVatban: number;
+  IddmdichVuNavigation: any;
 }
 
 export interface customReport {

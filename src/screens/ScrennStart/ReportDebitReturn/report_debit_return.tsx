@@ -20,7 +20,7 @@ import {
   useAppSelector,
 } from '../../../redux/hooks';
 import {Text, TouchableOpacity} from 'react-native';
-import {customerStore, reportStore} from '../../../features';
+import {customerStore, nccStore, reportStore} from '../../../features';
 import {postcongnophaitra} from '../../../features/report';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -36,14 +36,14 @@ function ReportDebitReturn({navigation, route}: any) {
   const [IDKH, setIDKH] = useState(null as any);
   const [rangdate, setRangdate] = useState({} as any);
   const [listData, setListData] = useState([] as any);
-  const customer = useAppSelector(customerStore);
+  const ncc = useAppSelector(nccStore);
   console.log('congnotra.listreport', congnotra.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
 
     console.log(value);
-    let obj: any = customer.listCus.find(o => o.NameVi === value);
+    let obj: any = ncc.listCus.find(o => o.NameVi === value);
     console.log('obj', obj.Id);
     setIDKH(obj.Id);
 
@@ -86,21 +86,22 @@ function ReportDebitReturn({navigation, route}: any) {
 
   useEffect(() => {
     dispatch(postcongnophaitra(datatruyenvao));
+
     setLoading(true);
   }, [navigation]);
 
   useEffect(() => {
     let arrName = [] as any;
-    async function getNameCustomer() {
-      customer.listCus.map(e => {
+    async function getNameNcc() {
+      ncc.listCus.map(e => {
         arrName.push(e.NameVi);
       });
     }
 
-    getNameCustomer();
+    getNameNcc();
 
     setListData(arrName);
-  }, [customer.listCus]);
+  }, [ncc.listCus]);
 
   const renderRow = ({item}: any, navigation: any) => (
     <TouchableOpacity
@@ -116,8 +117,8 @@ function ReportDebitReturn({navigation, route}: any) {
         <View style={styles.itemContent}>
           <Text
             style={[styles.itemBrand, {fontSize: 16, color: colors.redcustom}]}>
-              {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
-            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi}
+            {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
+            {ncc.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
@@ -217,7 +218,7 @@ function ReportDebitReturn({navigation, route}: any) {
                 }
           }>
           <SearchDropDown
-            label="Khách hàng"
+            label="Nhà cung cấp"
             value={valueCus}
             data={listData}
             onPress={onPressCus}

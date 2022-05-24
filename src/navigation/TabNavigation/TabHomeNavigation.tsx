@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux';
 import colors from '../../assets/css/color';
 import {token} from '../../commom/api';
 import {getcus} from '../../features/customer';
+import { getnhacungcap } from '../../features/ncc';
 import AllOption from '../../screens/ScrennStart/AllOption/allOption';
 import ReportCustomer from '../../screens/ScrennStart/ReportCustomer/report_customer';
 import ReportDebitReturn from '../../screens/ScrennStart/ReportDebitReturn/report_debit_return';
@@ -41,6 +42,7 @@ const TabHomeNavigation = ({navigation}: any) => {
     }
     name();
     console.log('token tab', token);
+    dispatch(getnhacungcap());
     dispatch(getcus());
   }, []);
   function onPress() {}
