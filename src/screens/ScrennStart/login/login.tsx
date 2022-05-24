@@ -69,8 +69,8 @@ const Login = ({navigation}: any) => {
         style={styles.bgImage}
         resizeMode="cover">
         <View
-          style={{paddingHorizontal: 20, position: 'absolute', width: '100%', bottom: 100}}>
-          {/* <Text style={styles.title}>Đăng nhập</Text> */}
+          style={{paddingHorizontal: 20, position: 'absolute', width: '100%', bottom: 120}}>
+          {/* <Text style={styles.title}>Ecomex</Text> */}
           <TextInput
             style={styles.input}
             placeholder="E-mail"
