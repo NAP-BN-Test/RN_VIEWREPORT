@@ -266,7 +266,7 @@ function ReportReceivable({navigation, route}: any) {
             <View style={styles.itemMetaContainerBottom}>
               <View style={styles.itemMetaContainer}>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
-                  Bán:
+                  Tổng thu:
                 </Text>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
                   {congnothu.listreport
@@ -309,8 +309,7 @@ const styles = StyleSheet.create({
   },
   itemBottom: {
     backgroundColor: 'white',
-    marginVertical: 10,
-    marginHorizontal: 10,
+    marginTop: 10,
 
     paddingHorizontal: 20,
     paddingBottom: 10,

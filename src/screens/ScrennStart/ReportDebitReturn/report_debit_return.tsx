@@ -268,7 +268,7 @@ function ReportDebitReturn({navigation, route}: any) {
             <View style={styles.itemMetaContainerBottom}>
               <View style={styles.itemMetaContainer}>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
-                  Mua:
+                  Tổng trả:
                 </Text>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
                   {congnotra.listreport
@@ -319,8 +319,7 @@ const styles = StyleSheet.create({
   },
   itemBottom: {
     backgroundColor: 'white',
-    marginVertical: 10,
-    marginHorizontal: 10,
+    marginTop: 10,
 
     paddingHorizontal: 20,
     paddingBottom: 10,

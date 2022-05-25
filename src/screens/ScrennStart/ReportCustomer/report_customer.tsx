@@ -273,7 +273,7 @@ function ReportCustomer({navigation, route}: any) {
             <View style={styles.itemMetaContainerBottom}>
               <View style={styles.itemMetaContainer}>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
-                  Mua:
+                  Tổng giá mua:
                 </Text>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
                   {doanhthu.listreport
@@ -286,7 +286,7 @@ function ReportCustomer({navigation, route}: any) {
 
               <View style={styles.itemMetaContainer}>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
-                  Bán:
+                  Tổng giá bán:
                 </Text>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
                   {doanhthu.listreport
@@ -299,7 +299,7 @@ function ReportCustomer({navigation, route}: any) {
 
               <View style={styles.itemMetaContainer}>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
-                  Lợi nhuận:
+                  Tổng doanh thu:
                 </Text>
                 <Text style={[styles.itemPrice, {color: colors.black}]}>
                   {doanhthu.listreport
@@ -328,8 +328,8 @@ const styles = StyleSheet.create({
   },
   itemBottom: {
     backgroundColor: 'white',
-    marginVertical: 10,
-    marginHorizontal: 10,
+    // marginVertical: 10,
+    marginTop: 10,
 
     paddingHorizontal: 20,
     paddingBottom: 10,
