@@ -22,11 +22,13 @@ import {
 import {Text, TouchableOpacity} from 'react-native';
 import {customerStore, reportStore} from '../../../features';
 import {postdoanhthu} from '../../../features/report';
+import {useIsFocused} from '@react-navigation/native';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 function ReportCustomer({navigation, route}: any) {
   const dispatch = useAppDispatch();
+  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [valueCus, setValueCus] = useState(String);
@@ -88,8 +90,15 @@ function ReportCustomer({navigation, route}: any) {
   }, []);
 
   useEffect(() => {
-    dispatch(postdoanhthu(datatruyenvao));
-    setLoading(true);
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is focused
+      dispatch(postdoanhthu(datatruyenvao));
+      setLoading(true);
+      console.log('focused');
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return () => unsubscribe.remove();
   }, [navigation]);
 
   useEffect(() => {
@@ -117,9 +126,10 @@ function ReportCustomer({navigation, route}: any) {
       <View style={styles.itemSubContainer}>
         {/* <Image source={{uri: item.image}} style={styles.itemImage} /> */}
         <View style={styles.itemContent}>
-          <Text
-            style={[styles.itemBrand, {fontSize: 16, color: colors.black, }]}>
-            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi?.toUpperCase()}
+          <Text style={[styles.itemBrand, {fontSize: 16, color: colors.black}]}>
+            {customer.listCus
+              ?.filter(e => item?.Idreceiver === e.Id)[0]
+              ?.NameVi?.toUpperCase()}
             {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>

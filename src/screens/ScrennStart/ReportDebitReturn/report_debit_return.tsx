@@ -22,10 +22,12 @@ import {
 import {Text, TouchableOpacity} from 'react-native';
 import {customerStore, nccStore, reportStore} from '../../../features';
 import {postcongnophaitra} from '../../../features/report';
+import { useIsFocused } from '@react-navigation/native';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 function ReportDebitReturn({navigation, route}: any) {
+  const isFocused = useIsFocused();
   const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -85,9 +87,17 @@ function ReportDebitReturn({navigation, route}: any) {
   }, []);
 
   useEffect(() => {
-    dispatch(postcongnophaitra(datatruyenvao));
+   
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is focused
+      dispatch(postcongnophaitra(datatruyenvao));
 
-    setLoading(true);
+      setLoading(true);
+      console.log('focused');
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return () => unsubscribe.remove();
   }, [navigation]);
 
   useEffect(() => {

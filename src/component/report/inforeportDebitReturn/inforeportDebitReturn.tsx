@@ -119,7 +119,7 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
 
           <View style={[styles.itemMetaContainer]}>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đên
+              Nơi đến
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               {donhang.order.PlaceOfReceipt}

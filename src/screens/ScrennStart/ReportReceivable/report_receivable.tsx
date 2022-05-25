@@ -22,10 +22,12 @@ import {
 import {Text, TouchableOpacity} from 'react-native';
 import {customerStore, reportStore} from '../../../features';
 import {postcongnophaithu} from '../../../features/report';
+import {useIsFocused} from '@react-navigation/native';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 function ReportReceivable({navigation, route}: any) {
+  const isFocused = useIsFocused();
   const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -84,8 +86,15 @@ function ReportReceivable({navigation, route}: any) {
   }, []);
 
   useEffect(() => {
-    dispatch(postcongnophaithu(datatruyenvao));
-    setLoading(true);
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is focused
+      console.log('focused');
+      dispatch(postcongnophaithu(datatruyenvao));
+      setLoading(true);
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return () => unsubscribe.remove();
   }, [navigation]);
 
   useEffect(() => {
@@ -113,10 +122,11 @@ function ReportReceivable({navigation, route}: any) {
       <View style={styles.itemSubContainer}>
         {/* <Image source={{uri: item.image}} style={styles.itemImage} /> */}
         <View style={styles.itemContent}>
-          <Text
-            style={[styles.itemBrand, {fontSize: 16, color: colors.black}]}>
-              {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
-            {customer.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi?.toUpperCase()}
+          <Text style={[styles.itemBrand, {fontSize: 16, color: colors.black}]}>
+            {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
+            {customer.listCus
+              ?.filter(e => item?.Idreceiver === e.Id)[0]
+              ?.NameVi?.toUpperCase()}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
