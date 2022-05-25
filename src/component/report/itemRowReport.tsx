@@ -43,7 +43,7 @@ export const renderRow = ({item}: any, navigation: any) => (
             Nơi đi: {item.noidi}
           </Text>
           <Text style={styles.itemSubtitle} numberOfLines={1}>
-            Nơi đên: {item.noiden}
+            Nơi đến: {item.noiden}
           </Text>
         </View>
 

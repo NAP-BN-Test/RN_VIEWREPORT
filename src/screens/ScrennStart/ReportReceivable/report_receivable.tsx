@@ -160,6 +160,15 @@ function ReportReceivable({navigation, route}: any) {
                 : 'Hôm nay ' + getParsedTime(item.OpenDate)}
             </Text>
           </View>
+          <View style={styles.itemMetaContainer}>
+            {/* <Text style={[styles.itemPrice, {color: colors.black}]}>
+              Giá mua: {item.GiaMuaSauThue.toLocaleString('vi-VN')}
+            </Text> */}
+            <Text style={[styles.itemPrice, {color: colors.black}]}>
+              {/* {currency(SpendingBD.totalmoney)}  */}
+              Giá bán: {item.GiaBanSauThue.toLocaleString('vi-VN')}
+            </Text>
+          </View>
           {/* <View style={styles.itemMetaContainer}>
             {item.id && (
               <View style={[styles.badge, {backgroundColor: colors.black}]}>
