@@ -261,6 +261,23 @@ function ReportReceivable({navigation, route}: any) {
             data={congnothu.listreport}
             renderItem={item => renderRow(item, navigation)}
           />
+
+          <View style={styles.itemBottom}>
+            <View style={styles.itemMetaContainerBottom}>
+              <View style={styles.itemMetaContainer}>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  Bán:
+                </Text>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  {congnothu.listreport
+                    .reduce((total: any, value: any) => {
+                      return total + Number(value.GiaBanSauThue);
+                    }, 0)
+                    ?.toLocaleString('vi-VN')}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
       )}
     </View>
@@ -290,7 +307,20 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: colors.bluish,
   },
+  itemBottom: {
+    backgroundColor: 'white',
+    marginVertical: 10,
+    marginHorizontal: 10,
 
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
+
+  itemMetaContainerBottom: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    // marginTop: 10,
+  },
   demoItem: {
     marginVertical: 15,
   },

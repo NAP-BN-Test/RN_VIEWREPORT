@@ -174,7 +174,6 @@ function ReportCustomer({navigation, route}: any) {
               Giá bán: {item.GiaBanSauThue.toLocaleString('vi-VN')}
             </Text>
           </View>
-         
 
           <View style={styles.itemMetaContainer}>
             {item.id && (
@@ -269,6 +268,49 @@ function ReportCustomer({navigation, route}: any) {
             data={doanhthu.listreport}
             renderItem={item => renderRow(item, navigation)}
           />
+
+          <View style={styles.itemBottom}>
+            <View style={styles.itemMetaContainerBottom}>
+              <View style={styles.itemMetaContainer}>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  Mua:
+                </Text>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  {doanhthu.listreport
+                    .reduce((total: any, value: any) => {
+                      return total + Number(value.GiaMuaSauThue);
+                    }, 0)
+                    ?.toLocaleString('vi-VN')}
+                </Text>
+              </View>
+
+              <View style={styles.itemMetaContainer}>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  Bán:
+                </Text>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  {doanhthu.listreport
+                    .reduce((total: any, value: any) => {
+                      return total + Number(value.GiaBanSauThue);
+                    }, 0)
+                    ?.toLocaleString('vi-VN')}
+                </Text>
+              </View>
+
+              <View style={styles.itemMetaContainer}>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  Lợi nhuận:
+                </Text>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  {doanhthu.listreport
+                    .reduce((total: any, value: any) => {
+                      return total + Number(value.LoiNhuan);
+                    }, 0)
+                    ?.toLocaleString('vi-VN')}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
       )}
     </View>
@@ -284,7 +326,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     // paddingTop: 20,
   },
+  itemBottom: {
+    backgroundColor: 'white',
+    marginVertical: 10,
+    marginHorizontal: 10,
 
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
+
+  itemMetaContainerBottom: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
   bgImage: {
     flex: 1,
     width: '100%',
@@ -363,86 +417,5 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
-
-export const dataTest = [
-  {
-    id: 1,
-    makhachhang: 'KH1',
-    tenkhachhang: 'khach hang 01',
-    madh: 'DH01',
-    tenhang: 'Hàng loại 1',
-    sotien: 1000000,
-    ngaymo: '09/05/2022',
-    soluong: '10',
-    noidi: 'Bắc Ninh',
-    noiden: 'Cà Mau',
-    sobill: 'DHL001',
-    ghichu: '123',
-    cothue: true,
-    tttt: false,
-    phantramthue: 8,
-    tiensauthue: 2000000,
-    loinhuan: 2000000,
-  },
-  {
-    id: 2,
-    makhachhang: 'KH2',
-    tenkhachhang: 'khach hang 02',
-    madh: 'DH02',
-    tenhang: 'Hàng loại 2',
-    sotien: 6000000,
-    ngaymo: '05/12/2022',
-    soluong: '20',
-    noidi: 'Bắc Ninh',
-    noiden: 'Cà Mau',
-    sobill: 'DHL002',
-    ghichu: '',
-    cothue: false,
-    tttt: false,
-    phantramthue: 0,
-    tiensauthue: 6800000,
-    loinhuan: 2000000,
-  },
-
-  {
-    id: 3,
-    makhachhang: 'KH3',
-    tenkhachhang: 'khach hang 03',
-    madh: 'DH03',
-    tenhang: 'Hàng loại 3',
-    ngaymo: '09/05/2022',
-    sotien: 2000000,
-    soluong: '30',
-    noidi: 'Bắc Ninh',
-    noiden: 'Cà Mau',
-    sobill: 'DHL003',
-    ghichu: '',
-    cothue: true,
-    tttt: false,
-    phantramthue: 8,
-    tiensauthue: 6800000,
-    loinhuan: 2000000,
-  },
-
-  {
-    id: 4,
-    makhachhang: 'KH4',
-    tenkhachhang: 'khach hang 04',
-    madh: 'DH04',
-    tenhang: 'Hàng loại 4',
-    ngaymo: '08/05/2022',
-    sotien: 6000,
-    soluong: '40',
-    noidi: 'Bắc Ninh',
-    noiden: 'Cà Mau',
-    sobill: 'DHL004',
-    ghichu: '',
-    cothue: true,
-    tttt: false,
-    phantramthue: 8,
-    tiensauthue: 6800000,
-    loinhuan: 2000000,
-  },
-];
 
 export const listports = ['Kh1', 'Kh2', 'KH3', 'KH4'];

@@ -22,7 +22,7 @@ import {
 import {Text, TouchableOpacity} from 'react-native';
 import {customerStore, nccStore, reportStore} from '../../../features';
 import {postcongnophaitra} from '../../../features/report';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -87,7 +87,6 @@ function ReportDebitReturn({navigation, route}: any) {
   }, []);
 
   useEffect(() => {
-   
     const unsubscribe = navigation.addListener('focus', () => {
       // The screen is focused
       dispatch(postcongnophaitra(datatruyenvao));
@@ -125,10 +124,11 @@ function ReportDebitReturn({navigation, route}: any) {
       <View style={styles.itemSubContainer}>
         {/* <Image source={{uri: item.image}} style={styles.itemImage} /> */}
         <View style={styles.itemContent}>
-          <Text
-            style={[styles.itemBrand, {fontSize: 16, color: colors.black}]}>
+          <Text style={[styles.itemBrand, {fontSize: 16, color: colors.black}]}>
             {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
-            {ncc.listCus?.filter(e => item?.Idreceiver === e.Id)[0]?.NameVi?.toUpperCase()}
+            {ncc.listCus
+              ?.filter(e => item?.Idreceiver === e.Id)[0]
+              ?.NameVi?.toUpperCase()}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
@@ -264,6 +264,22 @@ function ReportDebitReturn({navigation, route}: any) {
             data={congnotra.listreport}
             renderItem={item => renderRow(item, navigation)}
           />
+          <View style={styles.itemBottom}>
+            <View style={styles.itemMetaContainerBottom}>
+              <View style={styles.itemMetaContainer}>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  Mua:
+                </Text>
+                <Text style={[styles.itemPrice, {color: colors.black}]}>
+                  {congnotra.listreport
+                    .reduce((total: any, value: any) => {
+                      return total + Number(value.GiaMuaSauThue);
+                    }, 0)
+                    ?.toLocaleString('vi-VN')}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
       )}
     </View>
@@ -300,6 +316,19 @@ const styles = StyleSheet.create({
 
   itemContainer: {
     backgroundColor: 'white',
+  },
+  itemBottom: {
+    backgroundColor: 'white',
+    marginVertical: 10,
+    marginHorizontal: 10,
+
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
+
+  itemMetaContainerBottom: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   itemSubContainer: {
     flexDirection: 'row',
