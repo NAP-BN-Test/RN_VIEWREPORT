@@ -166,7 +166,7 @@ function ReportReceivable({navigation, route}: any) {
             </Text> */}
             <Text style={[styles.itemPrice, {color: colors.black}]}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              Giá bán: {item.GiaBanSauThue.toLocaleString('vi-VN')}
+              Giá bán: {item.GiaBanSauThue?.toLocaleString('vi-VN')}
             </Text>
           </View>
           {/* <View style={styles.itemMetaContainer}>

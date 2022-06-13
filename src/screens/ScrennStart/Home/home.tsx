@@ -118,7 +118,7 @@ function Home({navigation, route}: any) {
             )}
             <Text style={styles.itemPrice}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              {item.moneyct.toLocaleString('vi-VN')}
+              {item.moneyct?.toLocaleString('vi-VN')}
             </Text>
           </View>
         </View>

@@ -159,7 +159,7 @@ function ReportCustomer({navigation, route}: any) {
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Ngày mở:{' '}
               {getParsedDate(item.OpenDate) !=
-              getParsedDate(new Date().toLocaleDateString('en-US'))
+              getParsedDate(new Date()?.toLocaleDateString('en-US'))
                 ? getParsedDate(item.OpenDate)
                 : 'Hôm nay ' + getParsedTime(item.OpenDate)}
             </Text>
@@ -167,11 +167,11 @@ function ReportCustomer({navigation, route}: any) {
           <View style={styles.itemMetaContainer}>
             <Text style={[styles.itemPrice, {color: colors.black}]}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              Giá mua: {item.GiaMuaSauThue.toLocaleString('vi-VN')}
+              Giá mua: {item.GiaMuaSauThue?.toLocaleString('vi-VN')}
             </Text>
             <Text style={[styles.itemPrice, {color: colors.black}]}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              Giá bán: {item.GiaBanSauThue.toLocaleString('vi-VN')}
+              Giá bán: {item.GiaBanSauThue?.toLocaleString('vi-VN')}
             </Text>
           </View>
 
@@ -182,13 +182,13 @@ function ReportCustomer({navigation, route}: any) {
                   style={{fontSize: 10, color: colors.white}}
                   //   styleName="bright"
                 >
-                  Số lượng: {item.SoLuongHang.toLocaleString('vi-VN')}
+                  Số lượng: {item.SoLuongHang?.toLocaleString('vi-VN')}
                 </Text>
               </View>
             )}
             <Text style={[styles.itemPrice, {color: colors.black}]}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              Lợi nhuận: {item.LoiNhuan.toLocaleString('vi-VN')}
+              Lợi nhuận: {item.LoiNhuan?.toLocaleString('vi-VN')}
             </Text>
           </View>
         </View>

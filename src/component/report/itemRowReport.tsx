@@ -64,13 +64,13 @@ export const renderRow = ({item}: any, navigation: any) => (
                 style={{fontSize: 10, color: colors.white}}
                 //   styleName="bright"
               >
-                Số lượng: {item.soluong.toLocaleString('vi-VN')}
+                Số lượng: {item.soluong?.toLocaleString('vi-VN')}
               </Text>
             </View>
           )}
           <Text style={[styles.itemPrice, {color: colors.redcustom}]}>
             {/* {currency(SpendingBD.totalmoney)}  */}
-            {item.sotien.toLocaleString('vi-VN')}
+            {item.sotien?.toLocaleString('vi-VN')}
           </Text>
         </View>
       </View>
