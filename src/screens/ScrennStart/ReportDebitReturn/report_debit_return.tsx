@@ -27,19 +27,23 @@ const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 function ReportDebitReturn({navigation, route}: any) {
+  var date = new Date()
   const isFocused = useIsFocused();
   const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [valueCus, setValueCus] = useState(String);
-  const [datatruyenvao, setDatatruyenvao] = useState({} as any);
+  const [datatruyenvao, setDatatruyenvao] = useState({
+    startdate: moment(new Date(date.getFullYear(), date.getMonth(), 1)).format('YYYY-MM-DD').toString(),
+    todate: moment(date).format('YYYY-MM-DD 23:59').toString(),
+  } as any);
   const congnotra = useAppSelector(reportStore);
   const [removedate, setRemovedate] = useState(1);
   const [IDKH, setIDKH] = useState(null as any);
   const [rangdate, setRangdate] = useState({} as any);
   const [listData, setListData] = useState([] as any);
   const ncc = useAppSelector(nccStore);
-  console.log('congnotra.listreport', congnotra.listreport);
+  // console.log('congnotra.listreport', congnotra.listreport);
 
   const onPressCus = (value: any) => {
     setValueCus(value);
@@ -49,18 +53,18 @@ function ReportDebitReturn({navigation, route}: any) {
     console.log('obj', obj.Id);
     setIDKH(obj.Id);
 
-    if (rangdate.tungay) {
+    if (rangdate.startdate) {
       dispatch(
         postcongnophaitra({
           idkhachhang: obj.Id,
+          startdate: rangdate.startdate,
+          todate: rangdate.todate,
         }),
       );
     } else {
       dispatch(
         postcongnophaitra({
           idkhachhang: obj.Id,
-          tungay: rangdate.tungay,
-          denngay: rangdate.denngay,
         }),
       );
     }
@@ -70,8 +74,8 @@ function ReportDebitReturn({navigation, route}: any) {
     setValueCus(value);
   };
 
-  console.log('route', route);
-  console.log('navigation', navigation);
+  // console.log('route', route);
+  // console.log('navigation', navigation);
   const onRefresh = React.useCallback(() => {
     setValueCus('');
     setIDKH(null);
@@ -79,7 +83,7 @@ function ReportDebitReturn({navigation, route}: any) {
     setRemovedate(pre => pre + 1);
     setRefreshing(true);
     setRefreshing(false);
-    dispatch(postcongnophaitra({}));
+    dispatch(postcongnophaitra(datatruyenvao));
     setLoading(true);
     wait(2000).then(() => {
       setLoading(false);
@@ -92,7 +96,7 @@ function ReportDebitReturn({navigation, route}: any) {
       dispatch(postcongnophaitra(datatruyenvao));
 
       setLoading(true);
-      console.log('focused');
+      // console.log('focused');
     });
 
     // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -127,8 +131,8 @@ function ReportDebitReturn({navigation, route}: any) {
           <Text style={[styles.itemBrand, {fontSize: 16, color: colors.black}]}>
             {/* {item.CustomerName === null ? 'Tên khách hàng' : item.CustomerName} */}
             {ncc.listCus
-              ?.filter(e => item?.Idreceiver === e.Id)[0]
-              ?.NameVi?.toUpperCase()}
+              ?.filter(e => item?.IddmnhaCungCap === e.Id)[0]
+              ?.NameVi?.toUpperCase()?.trim()}
           </Text>
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
@@ -138,17 +142,17 @@ function ReportDebitReturn({navigation, route}: any) {
 
             <Text style={styles.itemSubtitle}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              Tên hàng: {item.GoodsDescription}
+              Tên hàng: {item.GoodsDescription?.trim()}
             </Text>
           </View>
 
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đi: {item.PlaceOfDelivery}
+              Nơi đi: {item.PlaceOfDelivery?.trim()}
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đến: {item.PlaceOfReceipt}
+              Nơi đến: {item.PlaceOfReceipt?.trim()}
             </Text>
           </View>
 
@@ -156,16 +160,13 @@ function ReportDebitReturn({navigation, route}: any) {
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Ngày mở:{' '}
-              {getParsedDate(item.OpenDate) !=
-              getParsedDate(new Date().toLocaleDateString('en-US'))
-                ? getParsedDate(item.OpenDate)
-                : 'Hôm nay ' + getParsedTime(item.OpenDate)}
+              {moment(item.OpenDate).format('DD-MM-YYYY').toString()}
             </Text>
           </View>
           <View style={styles.itemMetaContainer}>
             <Text style={[styles.itemPrice, {color: colors.black}]}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              Giá mua: {item.GiaMuaSauThue?.toLocaleString('vi-VN')}
+              Giá mua: {item.GiaMuaSauThue?.toLocaleString('vi-VN')} 
             </Text>
             {/* <Text style={[styles.itemPrice, {color: colors.black}]}>
              
@@ -198,24 +199,27 @@ function ReportDebitReturn({navigation, route}: any) {
         <RangeDate
           value={removedate}
           onConfirm={(e: any) => {
-            console.log('onConfirm', e);
+            // console.log('startDate', e.startDate);
+            // console.log('endDate', e.endDate);
+            // console.log('startDate', moment(e.startDate).format('YYYY-MM-DD').toString());
+            // console.log('endDate', moment(e.endDate).format('YYYY-MM-DD').toString());
             setRangdate({
-              tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-              denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+              startdate: moment(e.startDate).format('YYYY-MM-DD').toString(),
+              todate: moment(e.endDate).format('YYYY-MM-DD 23:59').toString(),
             });
             if (IDKH) {
               dispatch(
                 postcongnophaitra({
                   idkhachhang: IDKH,
-                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                  startdate: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  todate: moment(e.endDate).format('YYYY-MM-DD 23:59').toString(),
                 }),
               );
             } else {
               dispatch(
                 postcongnophaitra({
-                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                  startdate: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  todate: moment(e.endDate).format('YYYY-MM-DD 23:59').toString(),
                 }),
               );
             }
@@ -364,7 +368,7 @@ const styles = StyleSheet.create({
   itemMetaContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    // alignItems: 'center',
     marginTop: 10,
   },
   itemPrice: {

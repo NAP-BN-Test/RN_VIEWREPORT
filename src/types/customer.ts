@@ -37,6 +37,7 @@ export interface customer {
   DateCreate: string;
   FlagActive: true;
   MaChiNhanh: any;
+  IddmnhaCungCap: any;
   SoNgayDuKienPhatSinhJob: number;
   NgayPhatSinhJob: any;
   IdcityNavigation: any;

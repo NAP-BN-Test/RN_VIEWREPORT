@@ -11,8 +11,9 @@ interface propsRangeDate {
 }
 
 function RangeDate(props: propsRangeDate) {
+  var date = new Date()
   const [range, setRange] = useState(
-    {} as {startDate: any; endDate: any} | any,
+    {startDate: new Date(date.getFullYear(), date.getMonth(), 1), endDate: new Date()}  as {startDate: any; endDate: any} | any,
   );
   const [open, setOpen] = React.useState(false);
 
@@ -27,7 +28,7 @@ function RangeDate(props: propsRangeDate) {
   };
 
   useEffect(() => {
-    setRange({});
+    setRange({startDate: new Date(date.getFullYear(), date.getMonth(), 1), endDate: new Date()});
   }, [props.value]);
 
   //   const onDismiss = () => {

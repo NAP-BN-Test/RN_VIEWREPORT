@@ -31,8 +31,8 @@ const API_REPORT = {
   },
 
   async postcongnophaitra(data: {
-    tungay?: string;
-    denngay?: string;
+    startdate?: string;
+    todate?: string;
     idkhachhang?: number;
   }): Promise<any> {
     let value: any = (await AsyncStorage.getItem('token')) || '';
@@ -43,8 +43,8 @@ const API_REPORT = {
   },
 
   async postcongnophaithu(data: {
-    tungay?: string;
-    denngay?: string;
+    startdate?: string;
+    todate?: string;
     idkhachhang?: number;
   }): Promise<any> {
     let value: any = (await AsyncStorage.getItem('token')) || '';
@@ -55,8 +55,8 @@ const API_REPORT = {
   },
 
   async postdoanhthu(data: {
-    tungay?: string;
-    denngay?: string;
+    startdate?: string;
+    todate?: string;
     idkhachhang?: number;
   }): Promise<any> {
     let value: any = (await AsyncStorage.getItem('token')) || '';

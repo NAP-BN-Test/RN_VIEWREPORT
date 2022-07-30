@@ -30,7 +30,7 @@ export const getdonhang = createAsyncThunk(
 export const postcongnophaitra = createAsyncThunk(
   '/report/congnophaitra',
   async (
-    data: {tungay?: string; denngay?: string; idkhachhang?: number},
+    data: {startdate?: string; todate?: string; idkhachhang?: number},
     {rejectWithValue},
   ) => {
     console.log('postcongnophaitra', data);
@@ -59,7 +59,7 @@ export const postcongnophaitra = createAsyncThunk(
 export const postcongnophaithu = createAsyncThunk(
   '/report/congnophaithu',
   async (
-    data: {tungay?: string; denngay?: string; idkhachhang?: number},
+    data: {startdate?: string; todate?: string; idkhachhang?: number},
     {rejectWithValue},
   ) => {
     console.log('postcongnophaithu', data);
@@ -88,7 +88,7 @@ export const postcongnophaithu = createAsyncThunk(
 export const postdoanhthu = createAsyncThunk(
   '/report/doanhthu',
   async (
-    data: {tungay?: string; denngay?: string; idkhachhang?: number},
+    data: {startdate?: string; todate?: string; idkhachhang?: number},
     {rejectWithValue},
   ) => {
     console.log('postdoanhthu', data);

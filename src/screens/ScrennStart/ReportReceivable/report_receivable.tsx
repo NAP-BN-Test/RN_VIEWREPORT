@@ -27,12 +27,16 @@ const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 function ReportReceivable({navigation, route}: any) {
+  var date = new Date()
   const isFocused = useIsFocused();
   const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [valueCus, setValueCus] = useState(String);
-  const [datatruyenvao, setDatatruyenvao] = useState({} as any);
+  const [datatruyenvao, setDatatruyenvao] = useState({
+    startdate: moment(new Date(date.getFullYear(), date.getMonth(), 1)).format('YYYY-MM-DD').toString(),
+    todate: moment(date).format('YYYY-MM-DD 23:59').toString(),
+  } as any);
   const congnothu = useAppSelector(reportStore);
   const [removedate, setRemovedate] = useState(1);
   const [IDKH, setIDKH] = useState(null as any);
@@ -48,20 +52,21 @@ function ReportReceivable({navigation, route}: any) {
     console.log('obj', obj.Id);
     setIDKH(obj.Id);
 
-    if (rangdate.tungay) {
+    if (rangdate.startdate) {
       dispatch(
         postcongnophaithu({
           idkhachhang: obj.Id,
+          startdate: rangdate.startdate,
+          todate: rangdate.todate,
         }),
       );
     } else {
       dispatch(
         postcongnophaithu({
           idkhachhang: obj.Id,
-          tungay: rangdate.tungay,
-          denngay: rangdate.denngay,
         }),
       );
+      
     }
   };
 
@@ -136,17 +141,17 @@ function ReportReceivable({navigation, route}: any) {
 
             <Text style={styles.itemSubtitle}>
               {/* {currency(SpendingBD.totalmoney)}  */}
-              Tên hàng: {item.GoodsDescription}
+              Tên hàng: {item.GoodsDescription?.trim()}
             </Text>
           </View>
 
           <View style={[styles.itemMetaContainer, {marginTop: 0}]}>
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đi: {item.PlaceOfDelivery}
+              Nơi đi: {item.PlaceOfDelivery?.trim()}
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              Nơi đến: {item.PlaceOfReceipt}
+              Nơi đến: {item.PlaceOfReceipt?.trim()}
             </Text>
           </View>
 
@@ -154,10 +159,11 @@ function ReportReceivable({navigation, route}: any) {
             {/* <Text style={styles.itemTitle}>Ghi chú:</Text> */}
             <Text style={styles.itemSubtitle} numberOfLines={1}>
               Ngày mở:{' '}
-              {getParsedDate(item.OpenDate) !=
+              {/* {getParsedDate(item.OpenDate) !=
               getParsedDate(new Date().toLocaleDateString('en-US'))
                 ? getParsedDate(item.OpenDate)
-                : 'Hôm nay ' + getParsedTime(item.OpenDate)}
+                : 'Hôm nay ' + getParsedTime(item.OpenDate)} */}
+                {moment(item.OpenDate).format('DD-MM-YYYY').toString()}
             </Text>
           </View>
           <View style={styles.itemMetaContainer}>
@@ -195,24 +201,25 @@ function ReportReceivable({navigation, route}: any) {
         <RangeDate
           value={removedate}
           onConfirm={(e: any) => {
-            console.log('onConfirm', e);
+            console.log('startDate', e.startDate);
+            console.log('endDate', e.endDate);
             setRangdate({
-              tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-              denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+              startdate: moment(e.startDate).format('YYYY-MM-DD').toString(),
+              todate: moment(e.endDate).format('YYYY-MM-DD 23:59').toString(),
             });
             if (IDKH) {
               dispatch(
                 postcongnophaithu({
                   idkhachhang: IDKH,
-                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                  startdate: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  todate: moment(e.endDate).format('YYYY-MM-DD 23:59').toString(),
                 }),
               );
             } else {
               dispatch(
                 postcongnophaithu({
-                  tungay: moment(e.startDate).format('YYYY-MM-DD').toString(),
-                  denngay: moment(e.endDate).format('YYYY-MM-DD').toString(),
+                  startdate: moment(e.startDate).format('YYYY-MM-DD').toString(),
+                  todate: moment(e.endDate).format('YYYY-MM-DD 23:59').toString(),
                 }),
               );
             }
@@ -362,7 +369,7 @@ const styles = StyleSheet.create({
   itemMetaContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    // alignItems: 'center',
     marginTop: 10,
   },
   itemPrice: {

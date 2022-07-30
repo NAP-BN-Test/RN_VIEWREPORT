@@ -12,6 +12,7 @@ import {getdonhang} from '../../../features/report';
 import {customerStore, nccStore, reportStore} from '../../../features';
 import Loading from '../../loading/loading';
 import stylesGlobal from '../../../assets/css/cssGlobal';
+import moment from 'moment';
 function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
   console.log(props.route.params.item);
   console.log(props.route);
@@ -46,7 +47,7 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
               {
                 ncc.listCus?.filter(
                   e => donhang.order?.IddmnhaCungCap === e.Id,
-                )[0]?.NameVi
+                )[0]?.NameVi?.trim()
               }
             </Text>
           </View>
@@ -58,7 +59,7 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
               {
                 customer.listCus?.filter(
                   e => donhang.order?.Idreceiver === e.Id,
-                )[0]?.NameVi
+                )[0]?.NameVi?.trim()
               }
             </Text>
           </View>
@@ -77,7 +78,7 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
             </Text>
 
             <Text style={styles.itemSubtitle}>
-              {donhang.order.GoodsDescription}
+              {donhang.order.GoodsDescription?.trim()}
             </Text>
           </View>
 
@@ -113,7 +114,7 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
               Nơi đi
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {donhang.order.PlaceOfDelivery}
+              {donhang.order.PlaceOfDelivery?.trim()}
             </Text>
           </View>
 
@@ -122,7 +123,7 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
               Nơi đến
             </Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {donhang.order.PlaceOfReceipt}
+              {donhang.order.PlaceOfReceipt?.trim()}
             </Text>
           </View>
 
@@ -138,10 +139,11 @@ function InforeportDebitReturn({navigation: {goBack}, ...props}: any) {
           <View style={[styles.itemMetaContainer]}>
             <Text style={styles.itemSubtitle}>Ngày mở</Text>
             <Text style={styles.itemSubtitle} numberOfLines={1}>
-              {getParsedDate(donhang.order.OpenDate) !=
+              {/* {getParsedDate(donhang.order.OpenDate) !=
               getParsedDate(new Date().toLocaleDateString('en-US'))
                 ? getParsedDate(donhang.order.OpenDate)
-                : 'Hôm nay ' + getParsedTime(donhang.order.OpenDate)}
+                : 'Hôm nay ' + getParsedTime(donhang.order.OpenDate)} */}
+                {moment(donhang.order.OpenDate).format('DD-MM-YYYY').toString()}
             </Text>
           </View>
 
@@ -315,7 +317,7 @@ const styles = StyleSheet.create({
   itemMetaContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    // alignItems: 'center',
     marginTop: 5,
   },
   itemPrice: {
